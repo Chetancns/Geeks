@@ -22,10 +22,12 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
-using ExcelComparer;
+using ExcelComparer1;
+using System.Web.Http.Cors;
 
 namespace ExcelComparer.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*"/*, exposedHeaders: "X-My-Header*/)]
     [ApiController]
     [Route("[controller]")]
     public class ExcelComparerController : ControllerBase
@@ -33,14 +35,50 @@ namespace ExcelComparer.Controllers
         static IConfiguration conf = (new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build());
         public static string connectionString= conf["ConnectionString:Value"].ToString();
 
+        [Route("api/RuleList")]
+        [HttpGet]
+        public List<string> RuleList(){
+            string conn_string = connectionString;
+            MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
+            string col = string.Empty;
+            string query = string.Format("SELECT * FROM RuleList" );
+            conn.Open();
+            DataSet ds= new DataSet();
+            var cmd = new MySqlConnector.MySqlCommand(query.ToString(), conn);
+            MySqlDataAdapter da = new MySqlDataAdapter();
+            da.SelectCommand = cmd;
+            da.Fill(ds);
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    list.Add(dt.Rows[i]["Rules"].ToString());
+                }
+        
+            foreach(var item in list){
+                    Console.WriteLine(item);
+                }
+        return list;
+        }
 [Route("api/dataload")]
 [HttpPost]
-public async Task<JsonResult> DataLoad([FromBody] ExcelComparer1.GetXLObjClass objClass )
+public async Task<JsonResult> DataLoad([FromBody] GetXLObjClass objClass)
 {
-        ExcelComparer1.GetXLObjClass objClass1= new ExcelComparer1.GetXLObjClass();
+        GetXLObjClass objClass1= new GetXLObjClass();
+        Console.Write(objClass.SourceFile);
+        Console.Write(objClass.DestFile);
+        Console.Write(objClass.SourceSheetName);
+        Console.Write(objClass.DestSheetName);
+        Console.Write(objClass.FlagVariable[0]);
+        Console.Write(objClass.SelectedRules[0]);
+        Console.Write(objClass.UniqueKeys[0]);
+        Console.Write(objClass.SourceCol[0]);
+        Console.Write(objClass.DestCol[0]);
             try
             {   object json = string.Empty;
-                objClass.SourceFile =@"C:\Users\UDHAYASANKAR.R\Documents\GitHub\Source.xlsx";
+                objClass.SourceFile = @"C:\Users\UDHAYASANKAR.R\Documents\GitHub\Source.xlsx";
                 objClass.SourceSheetName = "Source_SQL";
                 objClass.DestFile= @"C:\Users\UDHAYASANKAR.R\Documents\GitHub\Destination.xlsx";
                 objClass.DestSheetName ="Destnation_SQL";
@@ -107,15 +145,15 @@ dstColList.Add("ID");
                 {
                     string TableName = string.Empty;
                     TableName="source";
-                    Console.Write("src file\n");
-                  //  await CreateTablefromFile(objClass.SourceFile,objClass.SourceSheetName+"$", TableName);/** To create Source Table in MYSQL and insert filedata into the tabel**/
+                    //Console.Write("src file\n");
+                    await CreateTablefromFile(objClass.SourceFile,objClass.SourceSheetName+"$", TableName);/** To create Source Table in MYSQL and insert filedata into the tabel**/
                 }
                 if(objClass.DestFile != null)
                 {
                     string TableName = string.Empty;
                     TableName="destination";
-                    Console.Write("destination file\n");
-                   // await CreateTablefromFile(objClass.DestFile,objClass.DestSheetName+"$",TableName);/** To create Destination Table in MYSQL and insert filedata into the tabel**/
+                    //Console.Write("destination file\n");
+                    await CreateTablefromFile(objClass.DestFile,objClass.DestSheetName+"$",TableName);/** To create Destination Table in MYSQL and insert filedata into the tabel**/
                 }
                // Console.Write(conn_string);
                 //InsertMapppedColumns(srcColList,dstColList,uniqueKey,boolFields);
