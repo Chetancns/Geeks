@@ -161,9 +161,9 @@ export class HomeComponent implements OnInit {
       this.errorMessage="";
       if(this.isDataValid())
       {
-          this.service.sendJsonData(this.ApiData);
+          this.service.DataOnSave(JSON.stringify(this.ApiData));
       }
-      
+
   }   
   onCheckboxChange(eve:any){
     if(eve.target.checked){
