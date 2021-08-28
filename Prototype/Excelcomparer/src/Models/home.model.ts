@@ -3,8 +3,8 @@ export class JsonData{
     DestFile:string|undefined;
     SourceSheetName:string|undefined;
     DestSheetName:string|undefined;
-    SourceCol:string[]|any;
-    DestCol:string[]|any;
+    SourceCol:string[];
+    DestCol:string[];
     UniqueKeys:string[];
     SelectedRules:string[];
     FlagVariable:string[]|any;

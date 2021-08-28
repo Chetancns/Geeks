@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
     DestSheetName:undefined,
     SourceCol:[],
     DestCol:[],
-    UniqueKeys:[] as string[],
+    UniqueKeys:[],
     SelectedRules:[],
     FlagVariable:[]
   }
@@ -153,6 +153,16 @@ export class HomeComponent implements OnInit {
      else{
        this.ApiData.DestCol.push('~');
      }
+   }
+   onRemove(Ch:String){
+     let index=-1;
+      if(Ch === 'S'){
+       index=this.ApiData.SourceCol.indexOf('~');
+        if(index != -1){this.ApiData.SourceCol.splice(index,1);}
+      }else{
+        index=this.ApiData.DestCol.indexOf('~');
+        if(index != -1){this.ApiData.DestCol.splice(index,1);}
+      }
    }
    
   onStart() 
