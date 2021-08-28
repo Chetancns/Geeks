@@ -28,6 +28,6 @@ export class HomeService {
        return rule;
       }
        sendJsonData(data:JsonData){
-         console.log(JSON.stringify(data))
+       console.log(JSON.stringify(data))
       }
 }
