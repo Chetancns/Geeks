@@ -128,17 +128,6 @@ export class HomeComponent implements OnInit {
    drop(event: CdkDragDrop<string[]>) {
      moveItemInArray(this.ApiData.DestCol, event.previousIndex, event.currentIndex);
      console.log(this.ApiData.DestCol);
-     //this.service.ColumnNames(JSON.stringify(this.DistKeys));
-    //  this.service.ColumnNames(JSON.stringify(this.DistKeys)).subscribe(
-    //    data => {
-    //      this.DistKeys = data;
-    //    },
-    //    error => {
-    //      this.frmValid = true;
-    //     this.errorMessage = error.message;
-    //     console.error('There was an error!', error);
-    // }
-    //  )
    }
    get_header_row(sheet:any) {
      var headers = [];
@@ -167,7 +156,14 @@ export class HomeComponent implements OnInit {
    
   onStart()
   {
-      this.service.sendJsonData(this.ApiData);
+     this.service.DataOnSave(JSON.stringify(this.ApiData));//.subscribe(
+    //     res => {
+    //       console.log(this.ApiData.SourceFile);
+    //       this.ApiData.SourceFile = res.toString();
+    //       this.ApiData.DestFile = res.toString();
+    //     }
+    //   );
+      //this.service.sendJasonData(this.ApiData);
   }   
   onCheckboxChange(eve:any){
     if(eve.target.checked){
@@ -182,7 +178,7 @@ export class HomeComponent implements OnInit {
     }
   }
   reset(){
-    console.log("Form Submitted!");
+    console.log("Refreshed!");
     this.Sread = false;
     this.Dread=false;
     this.ApiData.SourceCol = null;
