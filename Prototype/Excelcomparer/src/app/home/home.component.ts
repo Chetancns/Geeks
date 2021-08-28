@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   UniqueKeys=[];
   DistCol:any;
   errorMessage: any;
-  RuleList:any|undefined;
+  RuleList:any;
   ApiData:JsonData={
     SourceFile:undefined,
     DestFile:undefined,
@@ -38,7 +38,8 @@ export class HomeComponent implements OnInit {
     FlagVariable:[]
   }
   constructor(private service:HomeService) {
-    
+      this.RuleList=service.getRuleList();
+      console.log(this.RuleList);
    }
 
   ngOnInit(): void {

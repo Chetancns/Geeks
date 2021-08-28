@@ -91,10 +91,20 @@
                 <dual-list  [source]="ApiData.SourceCol" [(destination)]="ApiData.UniqueKeys" height="150px"></dual-list>
             </div> 
             <div class="col-sm-4">
-                <strong class="text-center" >Please Select Flag Variables if any</strong>
+                <strong class="text-center" >Please Select Flag or Boolean Variables if any</strong>
                 <dual-list [source]="ApiData.SourceCol" [(destination)]="ApiData.FlagVariable"  height="150px"></dual-list>
             </div>
         </div>
     </div>
-   
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <h4>Table Level Comparision</h4>
+                <div class="form-check" *ngFor="let Rule of RuleList">
+                    <input type="checkbox" class="form-check-input" [id]="Rule" [value]="Rule" [name]="Rule" (change)="onCheckboxChange($event)"/>
+                    <label class="form-check-label">{{Rule}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
