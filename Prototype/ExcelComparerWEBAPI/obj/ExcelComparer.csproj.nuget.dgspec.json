@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj": {}
+    "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj": {
+    "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj",
+        "projectUniqueName": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
         "projectName": "ExcelComparer",
-        "projectPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj",
+        "projectPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
         "packagesPath": "C:\\Users\\UDHAYASANKAR.R\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\obj\\",
+        "outputPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -41,6 +41,10 @@
         "net5.0": {
           "targetAlias": "netcoreapp5.0",
           "dependencies": {
+            "Microsoft.Office.Interop.Excel": {
+              "target": "Package",
+              "version": "[15.0.0, )"
+            },
             "MySQLConnector": {
               "target": "Package",
               "version": "[1.0.0, )"

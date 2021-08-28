@@ -23,6 +23,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using ExcelComparer;
+using ExcelLibrary=Microsoft.Office.Interop.Excel;
+using System.Reflection;
 
 namespace ExcelComparer.Controllers
 {
@@ -32,17 +34,18 @@ namespace ExcelComparer.Controllers
     {
         static IConfiguration conf = (new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build());
         public static string connectionString= conf["ConnectionString:Value"].ToString();
+        public static string ExcelPath= conf["ExcelPath:Value"].ToString();
 
 [Route("api/dataload")]
-[HttpPost]
-public async Task<JsonResult> DataLoad([FromBody] ExcelComparer1.GetXLObjClass objClass )
+[HttpGet]
+public async Task<JsonResult> DataLoad()
 {
-        ExcelComparer1.GetXLObjClass objClass1= new ExcelComparer1.GetXLObjClass();
+        ExcelComparer1.GetXLObjClass objClass= new ExcelComparer1.GetXLObjClass();
             try
             {   object json = string.Empty;
-                objClass.SourceFile =@"C:\Users\UDHAYASANKAR.R\Documents\GitHub\Source.xlsx";
+                objClass.SourceFile =ExcelPath+"UDHAYASANKAR.R\\Documents\\GitHub\\Source.xlsx";
                 objClass.SourceSheetName = "Source_SQL";
-                objClass.DestFile= @"C:\Users\UDHAYASANKAR.R\Documents\GitHub\Destination.xlsx";
+                objClass.DestFile= ExcelPath+"UDHAYASANKAR.R\\Documents\\GitHub\\Destination.xlsx";
                 objClass.DestSheetName ="Destnation_SQL";
                 List<string> uniqueKey = new List<string>();
                 List<string> boolFields= new List<string>();
@@ -78,6 +81,7 @@ srcColList.Add("Last_UpdatedDate");
 srcColList.Add("Payment_Comments");
 srcColList.Add("Products");
 srcColList.Add("~");
+srcColList.Add("ID2");
 dstColList.Add("PaymentID");
 dstColList.Add("ContractNo");
 dstColList.Add("ContractType");
@@ -102,27 +106,45 @@ dstColList.Add("Last_UpdatedDate");
 dstColList.Add("Payment_Comments");
 dstColList.Add("Products");
 dstColList.Add("ID");
+
                 await Task.Delay(1);
                 if(objClass.SourceFile != null)
                 {
                     string TableName = string.Empty;
                     TableName="source";
                     Console.Write("src file\n");
-                  //  await CreateTablefromFile(objClass.SourceFile,objClass.SourceSheetName+"$", TableName);/** To create Source Table in MYSQL and insert filedata into the tabel**/
+                 // await CreateTablefromFile(objClass.SourceFile,objClass.SourceSheetName+"$", TableName);/** To create Source Table in MYSQL and insert filedata into the tabel**/
                 }
                 if(objClass.DestFile != null)
                 {
                     string TableName = string.Empty;
                     TableName="destination";
                     Console.Write("destination file\n");
-                   // await CreateTablefromFile(objClass.DestFile,objClass.DestSheetName+"$",TableName);/** To create Destination Table in MYSQL and insert filedata into the tabel**/
+                //   await CreateTablefromFile(objClass.DestFile,objClass.DestSheetName+"$",TableName);/** To create Destination Table in MYSQL and insert filedata into the tabel**/
                 }
                // Console.Write(conn_string);
-                //InsertMapppedColumns(srcColList,dstColList,uniqueKey,boolFields);
-               // UniqueKeyMissingRecords(srcColList,dstColList,uniqueKey,boolFields);
-                ColumnMismatch(srcColList,dstColList);//Implementation pending
-                // RecordToRecordCount(); //Implementation pending
-
+               DataSet DatasetOutput = new DataSet();
+               DataTable dataTable = new DataTable();
+              InsertMapppedColumns(srcColList,dstColList,uniqueKey,boolFields);
+              InsertMapppedColumnsForCount(srcColList,dstColList,uniqueKey,boolFields);
+            //   dataTable = RecordCount().Copy();
+            //   DatasetOutput.Tables.Add(dataTable);
+            //   DatasetOutput.Tables.Add(UniqueKeyMissingRecords());
+            //   DatasetOutput.Tables.Add(ColumnMismatch(srcColList,dstColList));
+            //   DatasetOutput.Tables.Add(RecordToRecordCompare());
+              foreach(var Rule in objClass.SelectedRules)
+              {
+              if(objClass.SelectedRules.Equals("Record Count")){DatasetOutput.Tables.Add(RecordCount());}
+              if(objClass.SelectedRules.Equals("Unique Key Missing Records")){DatasetOutput.Tables.Add(UniqueKeyMissingRecords());}
+                  //UniqueKeyMissingRecordstest(srcColList,dstColList,uniqueKey,boolFields);
+              if(objClass.SelectedRules.Equals("Column Compare")){DatasetOutput.Tables.Add(ColumnMismatch(srcColList,dstColList));}
+              if(objClass.SelectedRules.Equals("Record to Record")){DatasetOutput.Tables.Add(RecordToRecordCompare());} 
+              }
+               //ExcelOutput(DT);
+               
+              // ExcelLibrary.DataSetHelper.CreateWorkbook("ExcelComparerOutput.xls", DatasetOutput);
+              //CreateExcelFile.CreateExcelDocument(DatasetOutput, "YourExcelfilename.xlsx", Response);
+             // CreateExcel(@"C:\Users\UDHAYASANKAR.R\Documents\GitHub\OUTPUT.xlsx",DatasetOutput);
                 return new JsonResult(json);
             }
             catch (Exception ex)
@@ -131,6 +153,19 @@ dstColList.Add("ID");
             }
            
         }
+public void CreateExcel( string fileName, DataSet dataSet)
+{
+Object missing = Missing.Value;
+Microsoft.Office.Interop.Excel.Application m_objExcel = new Microsoft.Office.Interop.Excel.Application();
+Microsoft.Office.Interop.Excel.Workbooks m_objWorkBooks = m_objExcel.Workbooks;
+Microsoft.Office.Interop.Excel.Workbook m_objWorkBook = m_objWorkBooks.Add(true);
+Microsoft.Office.Interop.Excel.Sheets m_objWorkSheets = m_objWorkBook.Sheets; ;
+Microsoft.Office.Interop.Excel.Worksheet m_objWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)m_objWorkSheets[1];
+m_objWorkBook.SaveAs(fileName, missing, missing, missing, missing, missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+missing, missing, missing, missing, missing);
+m_objWorkBook.Close(false,missing,missing);
+m_objExcel.Quit();
+}
 public async Task<bool> CreateTablefromFile(string filename,string sheetname, string Tablename)
 {
     try
@@ -230,94 +265,40 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
             throw;
         }
     }
-    public  static void UniqueKeyMissingRecords(List<string> srcColList,List<string> dstColList,List<string> UniquekeyList, List<string> boolFields )
+    [Route("api/RuleList")]
+        [HttpGet]
+        public List<string> RuleList(){
+            string conn_string = connectionString;
+            MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
+            string col = string.Empty;
+            string query = string.Format("Call GetComparisonRuleDetails()" );
+            conn.Open();
+            DataSet ds= new DataSet();
+            var cmd = new MySqlConnector.MySqlCommand(query.ToString(), conn);
+            MySqlDataAdapter da = new MySqlDataAdapter();
+            da.SelectCommand = cmd;
+            da.Fill(ds);
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            List<string> list = new List<string>();
+ 
+            for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    list.Add(dt.Rows[i]["rule_name"].ToString());
+                }
+        
+            foreach(var item in list){
+                    Console.WriteLine(item);
+                }
+        return list;
+        }
+     public  static DataTable UniqueKeyMissingRecords()
     {
         //string conn_string = "server=localhost;port=3306;database=excelcomparer;username=root;password=Root@123456;AllowLoadLocalInfile=True";
         string conn_string = connectionString;
         MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
         string col = string.Empty;
-        string callMissingRecords = string.Format("CALL IdentifyMissingRecords ('" );
-        bool isboolField = false;
-        foreach(var Uniquekey in UniquekeyList)
-        {
-            foreach(var flag in boolFields)
-            {
-
-            if(Uniquekey.Equals(flag))
-            {
-            callMissingRecords = callMissingRecords + "(CASE WHEN source.`"   + Uniquekey + "`=\"0\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"1\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"NO\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"YES\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"False\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"True\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"F\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"T\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"N\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"Y\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " Else \"\" END),";
-
-           // boolFields.Remove(flag.ToString());
-            isboolField =true;
-            Console.Write("Unique Key : Is Bool : Source :"+Uniquekey+"\n");
-            break;
-            
-            }
-            else
-            {
-                isboolField =false;
-            }
-            }
-             if(isboolField== false)
-             {
-             callMissingRecords = callMissingRecords + "IFNULL(source.`"   + Uniquekey + "`,\"\"),";
-             Console.Write("Unique Key : Is not Bool : Source :"+Uniquekey+ "\n");
-             }
-        }
-        callMissingRecords = callMissingRecords.Remove(callMissingRecords.Length-1);
-        callMissingRecords = callMissingRecords + "','";
-        isboolField= false;
-        foreach(var Uniquekey in UniquekeyList)
-        {
-            foreach(var srcCol in srcColList)
-            {
-                foreach(var flag in boolFields)
-            {
-            if(Uniquekey.Equals(flag))
-                if(Uniquekey.Equals(srcCol))
-                {
-                    int idx = srcColList.IndexOf(srcCol);
-            callMissingRecords = callMissingRecords + "(CASE WHEN destination.`"   + dstColList[idx] + "`=\"0\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"1\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"NO\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"YES\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"False\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"True\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"F\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"T\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"N\" then \"NO\"";
-            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"Y\" then \"YES\"";
-            callMissingRecords = callMissingRecords + " Else \"\" END),";
-            isboolField =true;
-            break;
-                }
-                else
-            {
-                isboolField=false;
-            }
-            }
-            if(Uniquekey.Equals(srcCol))
-                {
-                    int idx = srcColList.IndexOf(srcCol);
-            if(isboolField== false)
-             {
-             callMissingRecords = callMissingRecords + "IFNULL(destination.`"   + dstColList[idx] + "`,\"\"),";
-             }
-                }
-            }
-        }
-        callMissingRecords = callMissingRecords.Remove(callMissingRecords.Length-1);
-        callMissingRecords = callMissingRecords + "');";
+        string callMissingRecords = string.Format("CALL IdentifyMissingRecords ()" );
         conn.Open();
         //var cmd = new MySqlConnector.MySqlCommand(callMissingRecords.ToString(), conn);
        // cmd.ExecuteNonQuery(); 
@@ -328,17 +309,19 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
        da.Fill(ds);
         DataTable dt = new DataTable();
         dt = ds.Tables[0];
-        foreach(DataRow dataRow in dt.Rows)
-        {
-             foreach(var item in dataRow.ItemArray)
-             {
-             Console.WriteLine(item);
-             }
-        }
+        return dt;
+        // foreach(DataRow dataRow in dt.Rows)
+        // {
+        //      foreach(var item in dataRow.ItemArray)
+        //      {
+        //      Console.WriteLine(item);
+        //      }
+        // }
        //json = DataTableToJSONWithStringBuilder(dt);
       // cmd.ExecuteNonQuery(); 
-       Console.Write(callMissingRecords);
+      // Console.Write(callMissingRecords);
     }
+    
     public static void InsertMapppedColumns(List<String> srcMappedCol,List<string> destMappedColumns,List<string> UniqueKeys,List<string> flagFields)
     {
    // string conn_string = "server=localhost;port=3306;database=excelcomparer;username=root;password=Root@123456;AllowLoadLocalInfile=True";
@@ -347,12 +330,14 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
         string col = string.Empty;
         bool isUniquekey = false;
         bool isboolField = false;
-         string insertColMapping = string.Format("Truncate TABLE ColumnMapping;");
-         insertColMapping = insertColMapping + "INSERT INTO ColumnMapping(Source_Column, Destination_Column, Is_Unique,is_Flag)";
+        string insertColMapping = string.Format("Truncate TABLE ColumnMapping;");
+        insertColMapping = insertColMapping + "INSERT INTO ColumnMapping(Source_Column, Destination_Column, Is_Unique,is_Flag)";
         insertColMapping = insertColMapping + " VALUES " ;
         //Console.Write(destMappedColumns.Count + " : " + srcMappedCol.Count);
         for(int i=0;i<destMappedColumns.Count;i++)
         {
+            if(srcMappedCol[i]!="~" && destMappedColumns[i]!="~")
+            {
             insertColMapping =insertColMapping + "(case when \""+ srcMappedCol[i] + "\"=\"~\" then Null else \""+srcMappedCol[i] + "\" end,"  ;
             insertColMapping =insertColMapping + "case when \""+destMappedColumns[i] + "\"=\"~\" then Null else \"" +destMappedColumns[i] + "\" end,";
             
@@ -389,6 +374,7 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
                insertColMapping = insertColMapping + "Null),"; 
             }
             }
+        }
             
             
         insertColMapping = insertColMapping.Remove(insertColMapping.Length-1);
@@ -399,23 +385,85 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
         cmd.ExecuteNonQuery(); 
 
     }
-    public static void ColumnMismatch(List<string> sourceColmn, List<string> destinationColmn)
+    public static void InsertMapppedColumnsForCount(List<String> srcMappedCol,List<string> destMappedColumns,List<string> UniqueKeys,List<string> flagFields)
     {
-            StringBuilder result = new StringBuilder();
+   // string conn_string = "server=localhost;port=3306;database=excelcomparer;username=root;password=Root@123456;AllowLoadLocalInfile=True";
+        string conn_string = connectionString;
+        MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
+        string col = string.Empty;
+        bool isUniquekey = false;
+        bool isboolField = false;
+        string insertColMapping = string.Format("Truncate TABLE ColumnMappingForCount;");
+        insertColMapping = insertColMapping + "INSERT INTO ColumnMappingForCount(Source_Column, Destination_Column, Is_Unique,is_Flag)";
+        insertColMapping = insertColMapping + " VALUES " ;
+        //Console.Write(destMappedColumns.Count + " : " + srcMappedCol.Count);
+        for(int i=0;i<destMappedColumns.Count;i++)
+        {
+
+            insertColMapping =insertColMapping + "(case when \""+ srcMappedCol[i] + "\"=\"~\" then Null else \""+srcMappedCol[i] + "\" end,"  ;
+            insertColMapping =insertColMapping + "case when \""+destMappedColumns[i] + "\"=\"~\" then Null else \"" +destMappedColumns[i] + "\" end,";
+            
+            foreach(var uniqueFiels in UniqueKeys){
+            if(srcMappedCol[i].Equals(uniqueFiels))
+            {
+                insertColMapping = insertColMapping + "1,";
+                isUniquekey=true;
+                break;
+            }
+            else
+            {
+                isUniquekey=false;
+            }
+            }
+            if(isUniquekey==false)
+            {
+               insertColMapping = insertColMapping + "Null,"; 
+            }
+            foreach(var flag in flagFields){
+            if(srcMappedCol[i].Equals(flag))
+            {
+                insertColMapping = insertColMapping + "1),";
+                isboolField=true;
+                break;
+            }
+            else
+            {
+                isboolField=false;
+            }
+            }
+            if(isboolField==false)
+            {
+               insertColMapping = insertColMapping + "Null),"; 
+            }
+            }
+        
+            
+            
+        insertColMapping = insertColMapping.Remove(insertColMapping.Length-1);
+        insertColMapping = insertColMapping + ";";
+        
+        conn.Open();
+        var cmd = new MySqlConnector.MySqlCommand(insertColMapping.ToString(), conn);
+        cmd.ExecuteNonQuery(); 
+
+    }
+    public static DataTable ColumnMismatch(List<string> sourceColmn, List<string> destinationColmn)
+    {
+             StringBuilder result = new StringBuilder();
             DataTable dt = new DataTable();
             dt.Columns.Add("SourceColumnName", typeof(string));
             dt.Columns.Add("Match", typeof(bool));
             dt.Columns.Add("DestinationColumnName", typeof(string));
             dt.Columns.Add("Comments", typeof(string));
             
-            if (sourceColmn.Count == destinationColmn.Count)
-            {
-                result.Append("Count match no extra column.");
-            }
-            else
-            {
-                result.Append("Count mismatch.");
-                result.Append(Environment.NewLine);
+            // if (sourceColmn.Count ==0)
+            // {
+            //     result.Append("Count match no extra column.");
+            // }
+            // else
+            // {
+            //     result.Append("Count mismatch.");
+            //     result.Append(Environment.NewLine);
 
                 int Diff = sourceColmn.Count - destinationColmn.Count;
 
@@ -446,14 +494,14 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
                     if (sourceColmn[i].Equals(destinationColmn[i]))
                     {
                         dt.Rows.Add(sourceColmn[i], true, destinationColmn[i], "");
-                        Console.Write(dt.Rows);
+                       // Console.Write(dt.Rows[i]["SourceColumnName"] + " " + dt.Rows[i]["Match"] + " " + dt.Rows[i]["DestinationColumnName"]+" "+dt.Rows[i]["Comments"]);
                     }
                     else
                     {
                         string comments = string.Empty;
                         if (sourceColmn[i] == "~" || destinationColmn[i] == "~")
                         {
-                            comments = (sourceColmn[i] == "~") ? "Additional column in Source" : "Additional column in Destination";
+                            comments = (sourceColmn[i] == "~") ? "Additional column in Destination" : "Additional column in Source";
                         }
                         else
                         {
@@ -464,8 +512,50 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
                         
                     }
                 }
-            }
-        Console.Write(dt.Rows.Count);
+            
+            return dt;
+    }
+    public DataTable RecordCount()
+    {
+        string conn_string = connectionString;
+        MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
+        string recordCount = string.Format("CALL SP_Record_Count ()" );
+        DataSet ds= new DataSet();
+        var cmd = new MySqlConnector.MySqlCommand(recordCount.ToString(), conn);
+        MySqlDataAdapter da = new MySqlDataAdapter();
+       da.SelectCommand = cmd;
+       da.Fill(ds);
+        DataTable dt = new DataTable();
+        dt = ds.Tables[0];
+          foreach(DataRow dataRow in dt.Rows)
+        {
+             foreach(var item in dataRow.ItemArray)
+             {
+             Console.WriteLine(item);
+             }
+        }
+        return dt;
+    }
+    public DataTable RecordToRecordCompare()
+    {
+        string conn_string = connectionString;
+        MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
+        string recordCount = string.Format("CALL IdentifyMismatchColumns ()" );
+        DataSet ds= new DataSet();
+        var cmd = new MySqlConnector.MySqlCommand(recordCount.ToString(), conn);
+        MySqlDataAdapter da = new MySqlDataAdapter();
+       da.SelectCommand = cmd;
+       da.Fill(ds);
+        DataTable dt = new DataTable();
+        dt = ds.Tables[0];
+          foreach(DataRow dataRow in dt.Rows)
+        {
+             foreach(var item in dataRow.ItemArray)
+             {
+             Console.WriteLine(item);
+             }
+        }
+        return dt;
     }
  private List<MySqlBulkCopyColumnMapping> GetMySqlColumnMapping(DataTable dataTable)
     {
@@ -478,6 +568,7 @@ public async Task<bool> MySqlBlkCopyAsync(DataTable dataTable,string TableName)
         }
         return colMappings;
     }
+
 [Route("api/readandreturnjson")]
 [HttpPost]
 //public object ReadAndReturnJsonAsync()
@@ -623,6 +714,115 @@ public static void CreateTablefromJSON(string TableName,List<string> dtColumns)
     }  
     return JSONString.ToString();  
 }  
+public  static void UniqueKeyMissingRecordstest(List<string> srcColList,List<string> dstColList,List<string> UniquekeyList, List<string> boolFields )
+    {
+        //string conn_string = "server=localhost;port=3306;database=excelcomparer;username=root;password=Root@123456;AllowLoadLocalInfile=True";
+        string conn_string = connectionString;
+        MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
+        string col = string.Empty;
+        string callMissingRecords = string.Format("CALL IdentifyMissingRecords ('" );
+        bool isboolField = false;
+        foreach(var Uniquekey in UniquekeyList)
+        {
+            foreach(var flag in boolFields)
+            {
+
+            if(Uniquekey.Equals(flag))
+            {
+            callMissingRecords = callMissingRecords + "(CASE WHEN source.`"   + Uniquekey + "`=\"0\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"1\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"NO\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"YES\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"False\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"True\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"F\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"T\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"N\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN source.`"   + Uniquekey + "`=\"Y\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " Else \"\" END),";
+
+           // boolFields.Remove(flag.ToString());
+            isboolField =true;
+            Console.Write("Unique Key : Is Bool : Source :"+Uniquekey+"\n");
+            break;
+            
+            }
+            else
+            {
+                isboolField =false;
+            }
+            }
+             if(isboolField== false)
+             {
+             callMissingRecords = callMissingRecords + "IFNULL(source.`"   + Uniquekey + "`,\"\"),";
+             Console.Write("Unique Key : Is not Bool : Source :"+Uniquekey+ "\n");
+             }
+        }
+        callMissingRecords = callMissingRecords.Remove(callMissingRecords.Length-1);
+        callMissingRecords = callMissingRecords + "','";
+        isboolField= false;
+        foreach(var Uniquekey in UniquekeyList)
+        {
+            foreach(var srcCol in srcColList)
+            {
+                foreach(var flag in boolFields)
+            {
+            if(Uniquekey.Equals(flag))
+                if(Uniquekey.Equals(srcCol))
+                {
+                    int idx = srcColList.IndexOf(srcCol);
+            callMissingRecords = callMissingRecords + "(CASE WHEN destination.`"   + dstColList[idx] + "`=\"0\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"1\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"NO\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"YES\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"False\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"True\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"F\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"T\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"N\" then \"NO\"";
+            callMissingRecords = callMissingRecords + " WHEN destination.`"   + dstColList[idx] + "`=\"Y\" then \"YES\"";
+            callMissingRecords = callMissingRecords + " Else \"\" END),";
+            isboolField =true;
+            break;
+                }
+                else
+            {
+                isboolField=false;
+            }
+            }
+            if(Uniquekey.Equals(srcCol))
+                {
+                    int idx = srcColList.IndexOf(srcCol);
+            if(isboolField== false)
+             {
+             callMissingRecords = callMissingRecords + "IFNULL(destination.`"   + dstColList[idx] + "`,\"\"),";
+             }
+                }
+            }
+        }
+        callMissingRecords = callMissingRecords.Remove(callMissingRecords.Length-1);
+        callMissingRecords = callMissingRecords + "');";
+        conn.Open();
+        //var cmd = new MySqlConnector.MySqlCommand(callMissingRecords.ToString(), conn);
+       // cmd.ExecuteNonQuery(); 
+        DataSet ds= new DataSet();
+        var cmd = new MySqlConnector.MySqlCommand(callMissingRecords.ToString(), conn);
+        MySqlDataAdapter da = new MySqlDataAdapter();
+       da.SelectCommand = cmd;
+       da.Fill(ds);
+        DataTable dt = new DataTable();
+        dt = ds.Tables[0];
+        foreach(DataRow dataRow in dt.Rows)
+        {
+             foreach(var item in dataRow.ItemArray)
+             {
+             Console.WriteLine(item);
+             }
+        }
+       //json = DataTableToJSONWithStringBuilder(dt);
+      // cmd.ExecuteNonQuery(); 
+       Console.Write(callMissingRecords);
+    }
 
     }
     

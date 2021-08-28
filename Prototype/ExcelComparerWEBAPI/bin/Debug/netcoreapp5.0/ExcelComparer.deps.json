@@ -33,6 +33,7 @@
     ".NETCoreApp,Version=v5.0": {
       "ExcelComparer/1.0.0": {
         "dependencies": {
+          "Microsoft.Office.Interop.Excel": "15.0.4420.1017",
           "MySqlConnector": "1.0.0",
           "MySql.Data": "8.0.26",
           "Newtonsoft.Json": "13.0.1",
@@ -398,6 +399,17 @@
         }
       },
       "Microsoft.NETCore.Platforms/3.1.0": {},
+      "Microsoft.Office.Interop.Excel/15.0.4420.1017": {
+        "runtime": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {
+            "assemblyVersion": "15.0.0.0",
+            "fileVersion": "15.0.4420.1017"
+          }
+        },
+        "compile": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+        }
+      },
       "Microsoft.Win32.Registry/4.6.0": {
         "dependencies": {
           "System.Security.AccessControl": "4.7.0",
@@ -2320,6 +2332,13 @@
       "sha512": "sha512-z7aeg8oHln2CuNulfhiLYxCVMPEwBl3rzicjvIX+4sUuCwvXw5oXQEtbiU2c0z4qYL5L3Kmx0mMA/+t/SbY67w==",
       "path": "microsoft.netcore.platforms/3.1.0",
       "hashPath": "microsoft.netcore.platforms.3.1.0.nupkg.sha512"
+    },
+    "Microsoft.Office.Interop.Excel/15.0.4420.1017": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-O0X1z0mnmqlrFzWk0u0yMwY6eVu76LnsEyqptlRPHxxDMNuy8kUIer77abvfszgrnA+4EBLcDnllRbRkCUp9vA==",
+      "path": "microsoft.office.interop.excel/15.0.4420.1017",
+      "hashPath": "microsoft.office.interop.excel.15.0.4420.1017.nupkg.sha512"
     },
     "Microsoft.Win32.Registry/4.6.0": {
       "type": "package",

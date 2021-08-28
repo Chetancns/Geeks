@@ -70,6 +70,15 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.Office.Interop.Excel/15.0.4420.1017": {
+        "type": "package",
+        "compile": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+        },
+        "runtime": {
+          "lib/net20/Microsoft.Office.Interop.Excel.dll": {}
+        }
+      },
       "Microsoft.Win32.Registry/4.6.0": {
         "type": "package",
         "dependencies": {
@@ -480,6 +489,18 @@
         "runtime.json",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Microsoft.Office.Interop.Excel/15.0.4420.1017": {
+      "sha512": "O0X1z0mnmqlrFzWk0u0yMwY6eVu76LnsEyqptlRPHxxDMNuy8kUIer77abvfszgrnA+4EBLcDnllRbRkCUp9vA==",
+      "type": "package",
+      "path": "microsoft.office.interop.excel/15.0.4420.1017",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/Microsoft.Office.Interop.Excel.dll",
+        "microsoft.office.interop.excel.15.0.4420.1017.nupkg.sha512",
+        "microsoft.office.interop.excel.nuspec"
       ]
     },
     "Microsoft.Win32.Registry/4.6.0": {
@@ -1095,6 +1116,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "Microsoft.Office.Interop.Excel >= 15.0.0",
       "MySQLConnector >= 1.0.0",
       "MySql.Data >= 8.0.26",
       "Newtonsoft.Json >= 13.0.1",
@@ -1108,11 +1130,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj",
+      "projectUniqueName": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
       "projectName": "ExcelComparer",
-      "projectPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj",
+      "projectPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
       "packagesPath": "C:\\Users\\UDHAYASANKAR.R\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\obj\\",
+      "outputPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -1142,6 +1164,10 @@
       "net5.0": {
         "targetAlias": "netcoreapp5.0",
         "dependencies": {
+          "Microsoft.Office.Interop.Excel": {
+            "target": "Package",
+            "version": "[15.0.0, )"
+          },
           "MySQLConnector": {
             "target": "Package",
             "version": "[1.0.0, )"
@@ -1186,8 +1212,28 @@
       "code": "NU1603",
       "level": "Warning",
       "warningLevel": 1,
+      "message": "ExcelComparer depends on Microsoft.Office.Interop.Excel (>= 15.0.0) but Microsoft.Office.Interop.Excel 15.0.0 was not found. An approximate best match of Microsoft.Office.Interop.Excel 15.0.4420.1017 was resolved.",
+      "libraryId": "Microsoft.Office.Interop.Excel",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
       "message": "ExcelComparer depends on System.Data.OleDb (>= 4.5.1) but System.Data.OleDb 4.5.1 was not found. An approximate best match of System.Data.OleDb 4.6.0 was resolved.",
       "libraryId": "System.Data.OleDb",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Office.Interop.Excel 15.0.4420.1017' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Office.Interop.Excel",
       "targetGraphs": [
         "net5.0"
       ]
