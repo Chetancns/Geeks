@@ -46,6 +46,7 @@ public async Task<JsonResult> DataLoad()
                 objClass.SourceFile =ExcelPath+"UDHAYASANKAR.R\\Documents\\GitHub\\Source.xlsx";
                 objClass.SourceSheetName = "Source_SQL";
                 objClass.DestFile= ExcelPath+"UDHAYASANKAR.R\\Documents\\GitHub\\Destination.xlsx";
+                
                 objClass.DestSheetName ="Destnation_SQL";
                 List<string> uniqueKey = new List<string>();
                 List<string> boolFields= new List<string>();
@@ -107,6 +108,7 @@ dstColList.Add("Payment_Comments");
 dstColList.Add("Products");
 dstColList.Add("ID");
 
+
                 await Task.Delay(1);
                 if(objClass.SourceFile != null)
                 {
@@ -152,6 +154,34 @@ dstColList.Add("ID");
                  throw new Exception(ex.ToString());
             }
            
+        }
+        [Route("api/comparisonrule")]
+        [HttpGet]
+        public async Task<IList<ComparisonRule>> GetComparisonRule()
+        {
+            string conn_string = connectionString;
+            DataTable dt = new DataTable();
+
+            using (MySqlConnection conn = new MySqlConnection(conn_string))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("GetComparisonRuleDetails", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
+                    {
+                        sda.Fill(dt);
+
+                    }
+
+                    var ruleitems = (from DataRow dr in dt.Rows
+                                     select new ComparisonRule()
+                                     {
+                                         RuleId = Convert.ToInt32(dr["rule_id"]),
+                                         RuleName = Convert.ToString(dr["rule_name"])
+                                     }).ToList();
+                    return ruleitems;
+                }
+            }
         }
 public void CreateExcel( string fileName, DataSet dataSet)
 {

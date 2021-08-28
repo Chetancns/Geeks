@@ -9,17 +9,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AngularDualListBoxModule} from 'angular-dual-listbox';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule, 
-    DragDropModule,
+    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+    HttpClientModule,
     FormsModule,
+    AppRoutingModule,
+    DragDropModule,
+    BrowserAnimationsModule,
     AngularDualListBoxModule
   ],
   providers: [],
