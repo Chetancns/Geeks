@@ -1,5 +1,4 @@
 <!-- <h2 class="text-center">Database Comparision</h2> -->
-<hr>
 <div  *ngIf="frmValid" class="alert alert-danger">
     <div *ngIf="frmValid">
         <b>{{errorMessage}}</b>
@@ -58,6 +57,7 @@
             <div class="col-sm-2">
                 <div class="flex-container ex1">
                     <div class="flex-child magenta">
+<<<<<<< HEAD
                             <div><b>Source List</b></div>
                         <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
                             <table>
@@ -71,11 +71,27 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-success" (click)="onPush('S')">Push Null to Source</button>
+=======
+                        <div><b>Source List</b></div>
+                      <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
+                          <table>
+                              <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
+                                  <td>
+                                    {{items}}
+                                  </td>
+                              </tr>
+                          </table>
+                        <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
+                      </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" (click)="onPush('D')" >Push Null to Source</button>
+>>>>>>> 1f1e178b3971dcd555781655422ebda03df59143
                 </div>
             </div>
             
             <div class="col-sm-2">
                 <div class="flex-container ex2">
+<<<<<<< HEAD
                     <div class="flex-child green">
                         <div><b>Destination List</b></div>
                         <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
@@ -92,6 +108,24 @@
                       <button type="button" class="btn btn-primary" (click)="onPush('D')">Push Null to Destination</button>
                 </div>
             </div>
+=======
+                <div class="flex-child green">
+                    <div><b>Destination List</b></div>
+                    <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
+                        <table>
+                            <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
+                                <td >
+                                    {{items}}
+                                </td>
+                            </tr>
+                        </table>
+                      <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary" (click)="onPush('D')" >Push Null to Destination</button>
+                </div>
+                </div>
+>>>>>>> 1f1e178b3971dcd555781655422ebda03df59143
             <div class="col-sm-4">
                 <strong class="text-center " >Please Select Unique Key</strong>
                 <dual-list  [source]="ApiData.SourceCol" [(destination)]="ApiData.UniqueKeys" height="150px"></dual-list>
@@ -105,7 +139,7 @@
     <div class="container">
         <div class="form-group row">
             <div class="col-sm-6">
-                <h4>Table Level Comparision</h4>
+                <strong class="text-center">Please select the Rules you like to perform</strong>
                 <div class="form-check" *ngFor="let Rule of RuleList">
                     <input type="checkbox" class="form-check-input" [id]="Rule" [value]="Rule" [name]="Rule" (change)="onCheckboxChange($event)"/>
                     <label class="form-check-label">{{Rule}}</label>
