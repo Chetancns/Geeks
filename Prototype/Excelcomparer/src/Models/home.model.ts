@@ -5,7 +5,7 @@ export class JsonData{
     DestSheetName:string|undefined;
     SourceCol:string[]|any;
     DestCol:string[]|any;
-    UniqueKeys:string[]|any;
-    SelectedRules:string[]|any;
+    UniqueKeys:string[];
+    SelectedRules:string[];
     FlagVariable:string[]|any;
 }

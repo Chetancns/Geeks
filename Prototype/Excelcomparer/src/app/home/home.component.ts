@@ -4,6 +4,7 @@ import {DualListComponent} from 'angular-dual-listbox';
 import {CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 import {JsonData} from '../../Models/home.model'
 import {HomeService} from '../../Service/home.service'
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
   isDistExcelFile:boolean=false;
   wbSorce: any;
   wbDist:any;
-  UniqueKeys=[];
+
   DistCol:any;
   errorMessage: any;
   RuleList:any;
@@ -33,7 +34,7 @@ export class HomeComponent implements OnInit {
     DestSheetName:undefined,
     SourceCol:[],
     DestCol:[],
-    UniqueKeys:[],
+    UniqueKeys:[] as string[],
     SelectedRules:[],
     FlagVariable:[]
   }
@@ -158,16 +159,22 @@ export class HomeComponent implements OnInit {
    }
    onPush(Ch:String){
      if (Ch === 'S'){
-       this.ApiData.SourceCol.push('Null');
+       this.ApiData.SourceCol.push('~');
      }
      else{
-       this.ApiData.DestCol.push('Null');
+       this.ApiData.DestCol.push('~');
      }
    }
    
-  onStart()
+  onStart() 
   {
-      this.service.sendJsonData(this.ApiData);
+      this.frmValid=false;
+      this.errorMessage="";
+      if(this.isDataValid())
+      {
+          this.service.sendJsonData(this.ApiData);
+      }
+      
   }   
   onCheckboxChange(eve:any){
     if(eve.target.checked){
@@ -190,5 +197,32 @@ export class HomeComponent implements OnInit {
     this.ApiData.DestCol=null;
     window.location.reload();
   }
-
+  isDataValid():boolean{
+    if(this.ApiData.SourceFile == undefined || this.ApiData.SourceFile == ''){
+      this.frmValid = true;
+      this.errorMessage += "* Please select the SourceFile <br>";
+    }
+    if(this.ApiData.DestFile == undefined || this.ApiData.DestFile == ''){
+      this.frmValid = true;
+      this.errorMessage += "* Please select the SourceFile <br>";
+    }
+    if(this.ApiData.SourceSheetName == undefined || this.ApiData.SourceSheetName == ''){
+      this.frmValid=true;
+      this.errorMessage +=" * Please Select the Source Sheet <br>"
+    }
+    if(this.ApiData.DestSheetName == undefined || this.ApiData.DestSheetName ==''){
+      this.frmValid=true;
+      this.errorMessage +=" * please Select the Destination Sheet <br>"
+    }
+    console.log(this.ApiData.UniqueKeys.length)
+    if(this.ApiData.UniqueKeys.length <1){
+      this.frmValid=true;
+      this.errorMessage += " * please Select at least one Uniquekey";
+    }
+    if(this.ApiData.SelectedRules.length< 1 ){
+      this.frmValid=true;
+      this.errorMessage += " * please Select at least one Rule from the list";
+    }
+    return !this.frmValid;
+  }
 }
