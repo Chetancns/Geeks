@@ -38,13 +38,21 @@ export class HomeComponent implements OnInit {
     SelectedRules:[],
     FlagVariable:[]
   }
-  constructor(private service:HomeService) {
-      this.RuleList=service.getRuleList();
-      console.log(this.RuleList);
+  constructor(private service:HomeService) {      
    }
 
   ngOnInit(): void {
-  }
+    this.service.getRuleList().subscribe(
+      (res) => {
+        this.RuleList = res;
+        console.log(this.RuleList);
+      },
+      error => {
+        this.frmValid = true;
+       this.errorMessage = error.message;
+       console.error('There was an error!', error);
+      });
+    }
 
   onSourceChange(evt:any){
     const target: DataTransfer=<DataTransfer>(evt.target);
@@ -167,13 +175,19 @@ export class HomeComponent implements OnInit {
    
   onStart() 
   {
-      this.frmValid=false;
-      this.errorMessage="";
-      if(this.isDataValid())
-      {
-          this.service.DataOnSave(JSON.stringify(this.ApiData));
-      }
-
+     this.service.DataOnSave(JSON.stringify(this.ApiData)).subscribe(
+        res => {
+          console.log(this.ApiData + "In Component");
+          //this.ApiData = res;
+          //this.ApiData.DestFile = res.toString();
+        },
+        error => {
+               this.frmValid = true;
+              this.errorMessage = error.message;
+              console.error('There was an error!', error);
+        }
+      );
+      //this.service.sendJasonData(this.ApiData);
   }   
   onCheckboxChange(eve:any){
     if(eve.target.checked){

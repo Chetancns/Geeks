@@ -1,12 +1,10 @@
 <!-- <h2 class="text-center">Database Comparision</h2> -->
-<hr>
 <div  *ngIf="frmValid" class="alert alert-danger">
     <div *ngIf="frmValid">
         <b>{{errorMessage}}</b>
     </div>
 </div>
 <form>
-    
     <div class="container">
         <div class="form-group row ">
             <div class="col-sm-2">
@@ -18,7 +16,7 @@
                 <input type="file" class="file-upload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" placeholder="Upload Source File" (change)="onDistChange($event)" #inputDest/>                
             </div>
             <div class="col-sm-1">
-                <button type="button"  class="btn btn-success" (click)="onStart()">Start</button>
+                <button type="button" class="btn btn-success" (click)="onStart()">Start</button>
             </div>
             <div class="col-sm-1">
                 <button type="reset" class="btn btn-danger"  (click)="reset()">Abort</button>
@@ -56,57 +54,54 @@
     <div class="container cont">
         <div class="form-group row">
             <div class="col-sm-2">
-                <div class="flex-container ex1">
+            <div class="flex-container ex1">
                     <div class="flex-child magenta">
-                            <div><b>Source List</b></div>
-                        <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
-                            <table>
-                                <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
-                                    <td>
-                                        {{items}}
-                                    </td>
-                                </tr>
-                            </table>
-                            <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-success" (click)="onPush('S')">Push Null to Source</button>
-                    <button type="button" class="btn btn-primary" (click)="onRemove('S')">Remove Null to Source</button>
+                        <div><b>Source List</b></div>
+                      <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
+                          <table>
+                              <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
+                                  <td>
+                                    {{items}}
+                                  </td>
+                              </tr>
+                          </table>
+                        <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
+                      </div>
+                      </div>
+                      <button type="button" class="btn btn-primary" (click)="onPush('D')" >Push Null to Source</button>
                 </div>
             </div>
-            
             <div class="col-sm-2">
                 <div class="flex-container ex2">
-                    <div class="flex-child green">
-                        <div><b>Destination List</b></div>
-                        <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
-                            <table>
-                                <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
-                                    <td >
-                                        {{items}}
-                                    </td>
-                                </tr>
-                            </table>
-                          <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
-                        </div>
+                <div class="flex-child green">
+                    <div><b>Destination List</b></div>
+                    <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
+                        <table>
+                            <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
+                                <td >
+                                    {{items}}
+                                </td>
+                            </tr>
+                        </table>
+                      <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
                     </div>
-                      <button type="button" class="btn btn-primary" (click)="onPush('D')">Push Null to Destination</button>
-                      <button type="button" class="btn btn-success" (click)="onRemove('D')">Remove Null to Destination</button>
+                  </div>
+                  <button type="button" class="btn btn-primary" (click)="onPush('D')" >Push Null to Destination</button>
                 </div>
-            </div>
+                </div>
             <div class="col-sm-4">
-                <strong class="text-center " >Please Select Unique Key</strong>
+                <strong class="text-center">Please Select Unique Key</strong>
                 <dual-list  [source]="ApiData.SourceCol" [(destination)]="ApiData.UniqueKeys" height="150px"></dual-list>
             </div> 
             <div class="col-sm-4">
-                <strong class="text-center" >Please Select Flag or Boolean Variables if any</strong>
+                <strong class="text-center">Please Select Flag or Boolean Variables if any</strong>
                 <dual-list [source]="ApiData.SourceCol" [(destination)]="ApiData.FlagVariable"  height="150px"></dual-list>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="form-group row">
-            <div class="col-sm-6">
+            <div>
                 <strong class="text-center">Please select the Rules you like to perform</strong>
                 <div class="form-check" *ngFor="let Rule of RuleList">
                     <input type="checkbox" class="form-check-input" [id]="Rule" [value]="Rule" [name]="Rule" (change)="onCheckboxChange($event)"/>
@@ -116,4 +111,3 @@
         </div>
     </div>
 </form>
-
