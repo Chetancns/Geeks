@@ -27,7 +27,7 @@ export class HomeService {
       "Symbol Mismatch","Duplicate Check"]
        return rule;
       }
-      // sendJasonData(data:JsonData){
-      //   console.log(JSON.stringify(data))
-      // }
+       sendJsonData(data:JsonData){
+         console.log(JSON.stringify(data))
+      }
 }

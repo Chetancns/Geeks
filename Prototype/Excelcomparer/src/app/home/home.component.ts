@@ -157,7 +157,6 @@ export class HomeComponent implements OnInit {
    
   onStart() 
   {
-<<<<<<< HEAD
       this.frmValid=false;
       this.errorMessage="";
       if(this.isDataValid())
@@ -165,16 +164,6 @@ export class HomeComponent implements OnInit {
           this.service.sendJsonData(this.ApiData);
       }
       
-=======
-     this.service.DataOnSave(JSON.stringify(this.ApiData));//.subscribe(
-    //     res => {
-    //       console.log(this.ApiData.SourceFile);
-    //       this.ApiData.SourceFile = res.toString();
-    //       this.ApiData.DestFile = res.toString();
-    //     }
-    //   );
-      //this.service.sendJasonData(this.ApiData);
->>>>>>> 1f1e178b3971dcd555781655422ebda03df59143
   }   
   onCheckboxChange(eve:any){
     if(eve.target.checked){
