@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   wbDist:any;
 
   DistCol:any;
-  errorMessage: any;
+  errorMessage: any[];
   RuleList:any;
   ApiData:JsonData={
     SourceFile:undefined,
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
       },
       error => {
         this.frmValid = true;
-       this.errorMessage = error.message;
+        this.errorMessage.push(error.message);
        console.error('There was an error!', error);
       });
     }
@@ -175,7 +175,9 @@ export class HomeComponent implements OnInit {
    
   onStart() 
   {
-     this.service.DataOnSave(JSON.stringify(this.ApiData)).subscribe(
+    this.errorMessage=[];
+     if(this.isDataValid()){
+      this.service.DataOnSave(JSON.stringify(this.ApiData)).subscribe(
         res => {
           console.log(this.ApiData + "In Component");
           //this.ApiData = res;
@@ -183,10 +185,11 @@ export class HomeComponent implements OnInit {
         },
         error => {
                this.frmValid = true;
-              this.errorMessage = error.message;
+              this.errorMessage.push(error.message);
               console.error('There was an error!', error);
         }
       );
+     }
       //this.service.sendJasonData(this.ApiData);
   }   
   onCheckboxChange(eve:any){
@@ -213,29 +216,65 @@ export class HomeComponent implements OnInit {
   isDataValid():boolean{
     if(this.ApiData.SourceFile == undefined || this.ApiData.SourceFile == ''){
       this.frmValid = true;
-      this.errorMessage += "* Please select the SourceFile <br>";
+      this.errorMessage.push( "* Please select the SourceFile");
     }
     if(this.ApiData.DestFile == undefined || this.ApiData.DestFile == ''){
       this.frmValid = true;
-      this.errorMessage += "* Please select the SourceFile <br>";
+      this.errorMessage.push( "* Please select the DestinationFile");
     }
     if(this.ApiData.SourceSheetName == undefined || this.ApiData.SourceSheetName == ''){
       this.frmValid=true;
-      this.errorMessage +=" * Please Select the Source Sheet <br>"
+      this.errorMessage.push(" * Please Select the Source Sheet")
     }
     if(this.ApiData.DestSheetName == undefined || this.ApiData.DestSheetName ==''){
       this.frmValid=true;
-      this.errorMessage +=" * please Select the Destination Sheet <br>"
+      this.errorMessage .push(" * please Select the Destination Sheet");
     }
     console.log(this.ApiData.UniqueKeys.length)
     if(this.ApiData.UniqueKeys.length <1){
       this.frmValid=true;
-      this.errorMessage += " * please Select at least one Uniquekey";
+      this.errorMessage.push(" * please Select at least one Uniquekey");
     }
     if(this.ApiData.SelectedRules.length< 1 ){
       this.frmValid=true;
-      this.errorMessage += " * please Select at least one Rule from the list";
+      this.errorMessage.push(" * please Select at least one Rule from the list");
     }
     return !this.frmValid;
   }
+  OnAddUnqine(e){
+    if(this.ApiData.UniqueKeys.length == 0){
+      if(this.checkMapping(e) ){
+        if(e != 'Null'){this.ApiData.UniqueKeys.push(e);}else{
+         alert('Please Select the Correct Unique Key');
+        }
+       
+      }else{
+         alert('This Column '+e+'has no mapped column in Distination');
+      }
+      
+    }else{
+      if(this.ApiData.UniqueKeys.indexOf(e)==-1){
+       if(this.checkMapping(e) ){
+         if(e != '~'){this.ApiData.UniqueKeys.push(e);}else{
+          alert('Please Select the Correct Unique Key');
+         }
+        
+       }else{
+          alert('This Column '+e+'has no mapped column in Distination');
+       }
+      }else{
+         alert('The Unique Key '+ e +' is already Present in the list');
+      }
+    }
+   }
+   OnRemoveUnqine(e){
+         this.ApiData.UniqueKeys=this.ApiData.UniqueKeys.filter(value=>value!=e);
+   }
+   checkMapping(item):boolean{
+     let index=this.ApiData.SourceCol.indexOf(item);
+     if(this.ApiData.DestCol[index] === undefined || this.ApiData.DestCol[index] === '~'){
+       return false;
+     }else{
+     return true;}
+   }
 }
