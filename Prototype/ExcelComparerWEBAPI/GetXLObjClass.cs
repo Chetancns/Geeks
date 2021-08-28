@@ -5,6 +5,7 @@ namespace ExcelComparer1
 {
     public class GetXLObjClass
     {
+        public string SourceFile { get; set; }
         public string DestFile { get; set; }
         public string SourceSheetName { get; set; }
         public string DestSheetName { get; set; }
