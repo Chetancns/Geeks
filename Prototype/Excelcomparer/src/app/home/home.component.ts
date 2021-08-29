@@ -4,6 +4,7 @@ import {DualListComponent} from 'angular-dual-listbox';
 import {CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 import {JsonData} from '../../Models/home.model';
 import {HomeService} from '../../Service/home.service';
+import { fileURLToPath } from 'url';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +19,11 @@ export class HomeComponent implements OnInit {
   Dread=false;
   SourceSheetlist: string[]=[];
   DistSheetlist:string[]=[];
-  isSourceExcelFile:boolean=false;
-  isDistExcelFile:boolean=false;
+  isSourceExcelFile:boolean;
+  isDistExcelFile:boolean;
   wbSorce: any;
   wbDist:any;
-
+  FileName: any;
   DistCol:any;
   errorMessage:string[]=[];
   RuleList:any;
@@ -176,17 +177,27 @@ export class HomeComponent implements OnInit {
   onStart() 
   {
     this.errorMessage=[];
-     if(!this.isDataValid()){
+    
+     if(this.isDataValid()){
+      this.spinnerEnabled = true;
       this.service.DataOnSave(JSON.stringify(this.ApiData)).subscribe(
         res => {
-          
-          //this.ApiData = res;
+          this.spinnerEnabled = false;
+           this.FileName = res;
+           let name = "";
+           let n = 1;
+           for(var i=0; i< this.FileName.length; i++){
+             name = name + n  + ") " + this.FileName[i] + "\n";
+             n++;
+           }        
+           alert("Please find the excel in the project Output folder \n " + name)
           //this.ApiData.DestFile = res.toString();
         },
         error => {
                this.frmValid = true;
               this.errorMessage.push(error.message);
               console.error('There was an error!', error);
+              this.spinnerEnabled = false;
         }
       );
      }

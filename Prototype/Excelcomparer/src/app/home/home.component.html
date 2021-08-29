@@ -15,9 +15,12 @@
                 <h4>Destination File</h4>
                 <input type="file" class="file-upload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" placeholder="Upload Source File" (change)="onDistChange($event)" #inputDest/>                
             </div>
-            <span *ngIf="spinnerEnabled">Loading.....</span>
+            
+            <span *ngIf="spinnerEnabled">Loading.....
+                <div class="spinner"></div>
+            </span>
             <div class="col-sm-1">
-                <button type="button" class="btn btn-success" (click)="onStart()">Start</button>
+                <button type="button" class="btn btn-success" (click)="onStart()" [disabled]="spinnerEnabled">Start</button>
             </div>
             <div class="col-sm-1">
                 <button type="reset" class="btn btn-danger"  (click)="reset()">Abort</button>
@@ -46,7 +49,7 @@
                   </span>
                   
                   <div *ngIf="isDistExcelFile === false">
-                    Source file is not an Excel file
+                    Destination file is not an Excel file
                   </div>
             </div>
         </div>
@@ -54,45 +57,50 @@
     
     <div class="container cont">
         <div class="form-group row">
-            <div class="col-sm-2">
-                <div class="flex-container ex1">
-                    <div class="flex-child magenta">
-                        <div><b>Source List</b></div>
-                      <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
-                          <table>
-                              <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
-                                  <td style="color: black;">
-                                    {{items}}
-                                  </td>
-                              </tr>
-                          </table>
-                        <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
+            <label>Perfom Column Mapping</label>
+            <div>
+                <div class="col-sm-2">
+                    <div class="flex-container ex1">
+                        <div class="flex-child magenta">
+                            
+                            <div><b>Source Column</b></div>
+                          <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
+                              <table>
+                                  <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
+                                      <td style="color: black;">
+                                        {{items}}
+                                      </td>
+                                  </tr>
+                              </table>
+                            <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
+                          </div>
+                        </div>
+                          <button type="button" class="btn btn-success btns" (click)="onPush('S')" >Push Null to Source</button>
+                          <button type="button" class="btn btn-primary btns" (click)="onRemove('S')">Remove Null from Source</button>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2">
+                    <div class="flex-container ex2">
+                    <div class="flex-child green">
+                        <div><b>Destination Column</b></div>
+                        <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
+                            <table>
+                                <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
+                                    <td style="color: black;">
+                                        {{items}}
+                                    </td>
+                                </tr>
+                            </table>
+                          <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
+                        </div>
                       </div>
+                      <button type="button" class="btn btn-success btns" (click)="onPush('D')" >Push Null to Destination</button>
+                      <button type="button" class="btn btn-primary btns" (click)="onRemove('D')">Remove Null from Destination</button>
                     </div>
-                      <button type="button" class="btn btn-success btns" (click)="onPush('S')" >Push Null to Source</button>
-                      <button type="button" class="btn btn-primary btns" (click)="onRemove('S')">Remove Null from Source</button>
                 </div>
             </div>
-            <div class="col-sm-1"></div>
-            <div class="col-sm-2">
-                <div class="flex-container ex2">
-                <div class="flex-child green">
-                    <div><b>Destination List</b></div>
-                    <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
-                        <table>
-                            <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
-                                <td style="color: black;">
-                                    {{items}}
-                                </td>
-                            </tr>
-                        </table>
-                      <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-success btns" (click)="onPush('D')" >Push Null to Destination</button>
-                  <button type="button" class="btn btn-primary btns" (click)="onRemove('D')">Remove Null from Destination</button>
-                </div>
-            </div>
+            
             <div class="col-sm-1"></div>
                 <div class="col-sm-2 vl">
                      <div class="flex-container ex1">
@@ -116,7 +124,7 @@
                  <div class="col-sm-2">
                      <div class="flex-container ex2">
                          <div class="flex-child green">
-                             <strong>Selected Unique Keys List</strong>
+                             <strong>Selected Unique Keys</strong>
                                  <table>
                                      <tr class="example-box" *ngFor="let items of ApiData.UniqueKeys">
                                          <td >

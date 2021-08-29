@@ -38,9 +38,12 @@ namespace ExcelComparer.Controllers
         public static string connectionString = conf["ConnectionString:Value"].ToString();
         public static string ExcelPath = conf["ExcelPath:Value"].ToString();
 
+        public static string OutputPath = conf["OutputPath:Value"].ToString();
+
         [Route("api/dataload")]
         [HttpPost]
-        public async Task<JsonResult> DataLoad([FromBody] GetXLObjClass objClass1)
+        public async Task<List<string>> DataLoad([FromBody] GetXLObjClass objClass1)
+        //public async Task<JsonResult> DataLoad([FromBody] GetXLObjClass objClass1)
         {
             ExcelComparer1.GetXLObjClass objClass = new ExcelComparer1.GetXLObjClass();
             try
@@ -129,25 +132,31 @@ namespace ExcelComparer.Controllers
                 }
                 InsertMapppedColumns(objClass1.SourceCol, objClass1.DestCol, objClass1.UniqueKeys, objClass1.FlagVariable);
                 InsertMapppedColumnsForCount(objClass1.SourceCol, objClass1.DestCol, objClass1.UniqueKeys, objClass1.FlagVariable);
+                List<string> FileNameList = new List<string>();
                 
                 foreach (var Rule in objClass1.SelectedRules)
                 {
                     Console.Write(Rule);
-                    if (Rule.ToString() == "Record Count") { RecordCount(); Console.Write("Record count is present");}
-                    if (Rule.ToString() == "Unique Key Missing Records") { UniqueKeyMissingRecords(); Console.Write("Unique key missing records is present"); }
+                    if (Rule.ToString() == "Record Count") { FileNameList.Add(RecordCount()); Console.Write("Record count is present");}
+                    if (Rule.ToString() == "Unique Key Missing Records") { FileNameList.Add(UniqueKeyMissingRecords()); Console.Write("Unique key missing records is present"); }
                     //UniqueKeyMissingRecordstest(srcColList,dstColList,uniqueKey,boolFields);
-                    if (Rule.ToString() == "Column Compare") { ColumnMismatch(objClass1.SourceCol, objClass1.DestCol); Console.Write("Column mismatch is present"); }
-                    if (Rule.ToString() == "Record to Record") { RecordToRecordCompare(); Console.Write("record to record compare is present"); }
-                    if(Rule.ToString() == "Final Summary"){RecordToRecordCompareSummary(); Console.Write("Recordto record compare summary is present");}
+                    if (Rule.ToString() == "Column Compare") { FileNameList.Add(ColumnMismatch(objClass1.SourceCol, objClass1.DestCol)); Console.Write("Column mismatch is present"); }
+                    if (Rule.ToString() == "Record to Record") {FileNameList.Add(RecordToRecordCompare()); Console.Write("record to record compare is present"); }
+                    if(Rule.ToString() == "Final Summary"){FileNameList.Add(RecordToRecordCompareSummary()); Console.Write("Recordto record compare summary is present");}
                 }
-                
-
+                foreach(var list in FileNameList){
+                    Console.Write(list);
+                    
+                }
+                // json = FileNameList;
+                // Console.CapsLock(json);
                 // RecordCount();
                 // UniqueKeyMissingRecords();
                 // //UniqueKeyMissingRecordstest(srcColList,dstColList,uniqueKey,boolFields);
                 // ColumnMismatch(objClass1.SourceCol,objClass1.DestCol);
                 // RecordToRecordCompare();
-                return new JsonResult(json);
+                //return new JsonResult(json);
+                return FileNameList;
             }
             catch (Exception ex)
             {
@@ -314,21 +323,25 @@ namespace ExcelComparer.Controllers
             }
             return list;
         }
-        public static void UniqueKeyMissingRecords()
+        public static string UniqueKeyMissingRecords()
         {
             //string conn_string = "server=localhost;port=3306;database=excelcomparer;username=root;password=Root@123456;AllowLoadLocalInfile=True";
             string conn_string = connectionString;
+            string filename = string.Empty;
             MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
             string col = string.Empty;
             string callMissingRecords = string.Format("CALL IdentifyMissingRecords ()");
             conn.Open();
             DataSet ds = new DataSet();
-            var cmd = new MySqlConnector.MySqlCommand(callMissingRecords.ToString(), conn);
+            MySqlCommand cmd = new MySqlCommand(callMissingRecords.ToString(), conn);
+            cmd.CommandTimeout = 12000;
             MySqlDataAdapter da = new MySqlDataAdapter();
             da.SelectCommand = cmd;
             da.Fill(ds);
             ds.Tables[0].TableName = "UniqueKeyMissingRecords";
-            ExcelLibrary.DataSetHelper.CreateWorkbook("UniqueKeyMissingRecords.xls", ds);
+            filename = "UniqueKeyMissingRecords.xls";
+            ExcelLibrary.DataSetHelper.CreateWorkbook(OutputPath + filename, ds);
+            return filename;
         }
 
         public static void InsertMapppedColumns(List<String> srcMappedCol, List<string> destMappedColumns, List<string> UniqueKeys, List<string> flagFields)
@@ -460,9 +473,10 @@ namespace ExcelComparer.Controllers
             cmd.ExecuteNonQuery();
 
         }
-        public static void ColumnMismatch(List<string> sourceColmn, List<string> destinationColmn)
+        public static string ColumnMismatch(List<string> sourceColmn, List<string> destinationColmn)
         {
             StringBuilder result = new StringBuilder();
+            string filename = string.Empty;
             DataTable dt = new DataTable();
             dt.Columns.Add("SourceColumnName", typeof(string));
             dt.Columns.Add("Match", typeof(bool));
@@ -516,45 +530,59 @@ namespace ExcelComparer.Controllers
             DataSet ds = new DataSet();
             ds.Tables.Add(dt);
             ds.Tables[0].TableName = "ColumnMismatch";
-            ExcelLibrary.DataSetHelper.CreateWorkbook("ColumnMismatch.xls", ds);
+            filename = "ColumnMismatch.xls";
+            ExcelLibrary.DataSetHelper.CreateWorkbook(OutputPath + filename, ds);
+            return filename;
         }
-        public static void RecordCount()
+        public static string RecordCount()
         {
             string conn_string = connectionString;
+            string filename = string.Empty;
             MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
             string recordCount = string.Format("CALL SP_Record_Count ()");
             DataSet ds = new DataSet();
-            var cmd = new MySqlConnector.MySqlCommand(recordCount.ToString(), conn);
+            MySqlCommand cmd = new MySqlCommand(recordCount.ToString(), conn);
+            cmd.CommandTimeout = 12000;
             MySqlDataAdapter da = new MySqlDataAdapter();
             da.SelectCommand = cmd;
             da.Fill(ds);
             ds.Tables[0].TableName = "RecordCount";
-            ExcelLibrary.DataSetHelper.CreateWorkbook("RecordCount.xls", ds);
+            filename = "RecordCount.xls";
+            ExcelLibrary.DataSetHelper.CreateWorkbook(OutputPath + filename, ds);
+            return filename;
         }
-        public static void RecordToRecordCompare()
+        public static string RecordToRecordCompare()
         {
             string conn_string = connectionString;
+            string filename = string.Empty;
             MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
             string recordCount = string.Format("CALL IdentifyMismatchColumns ()");
             DataSet ds = new DataSet();
-            var cmd = new MySqlConnector.MySqlCommand(recordCount.ToString(), conn);
+            MySqlCommand cmd = new MySqlCommand(recordCount.ToString(), conn);
+            cmd.CommandTimeout = 12000;
             MySqlDataAdapter da = new MySqlDataAdapter();
             da.SelectCommand = cmd;
             da.Fill(ds);
             ds.Tables[0].TableName = "RecordToRecord";
-            ExcelLibrary.DataSetHelper.CreateWorkbook("RecordToRecountCompare.xls", ds);
+            filename = "RecordToRecountCompare.xls";
+            ExcelLibrary.DataSetHelper.CreateWorkbook(OutputPath + filename, ds);
+            return filename;
         }
-        public static void RecordToRecordCompareSummary(){
+        public static string RecordToRecordCompareSummary(){
             string conn_string = connectionString;
+            string filename = string.Empty;
             MySqlConnector.MySqlConnection conn = new MySqlConnector.MySqlConnection(conn_string);
             string recordCount = string.Format("CALL SP_Value_check ()");
             DataSet ds = new DataSet();
-            var cmd = new MySqlConnector.MySqlCommand(recordCount.ToString(), conn);
+            MySqlCommand cmd = new MySqlCommand(recordCount.ToString(), conn);
+            cmd.CommandTimeout = 12000;
             MySqlDataAdapter da = new MySqlDataAdapter();
             da.SelectCommand = cmd;
             da.Fill(ds);
             ds.Tables[0].TableName = "RecordToRecordSummary";
-            ExcelLibrary.DataSetHelper.CreateWorkbook("RecordToRecountCompareSummary.xls", ds);
+            filename = "RecordToRecountCompareSummary.xls";
+            ExcelLibrary.DataSetHelper.CreateWorkbook(OutputPath + filename, ds);
+            return filename;
         }
         private List<MySqlBulkCopyColumnMapping> GetMySqlColumnMapping(DataTable dataTable)
         {
