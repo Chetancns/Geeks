@@ -17,6 +17,8 @@ table {
   }
 .cont{
   overflow-y:scroll;
+  background-color:blanchedalmond;
+  border: 2px solid rgb(1, 1, 19);
   padding-bottom: 30px;   
 }
   div.ex1{
