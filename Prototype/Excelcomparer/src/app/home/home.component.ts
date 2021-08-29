@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit {
         }
       );
      }
-      //this.service.sendJasonData(this.ApiData);
+    
   }   
   onCheckboxChange(eve:any){
     if(eve.target.checked){
@@ -228,7 +228,11 @@ export class HomeComponent implements OnInit {
     }
     if(this.ApiData.DestSheetName == undefined || this.ApiData.DestSheetName ==''){
       this.frmValid=true;
-      this.errorMessage .push(" * please Select the Destination Sheet");
+      this.errorMessage.push(" * please Select the Destination Sheet");
+    }
+    if(this.ApiData.SourceCol.length != this.ApiData.DestCol.length){
+      this.frmValid = true;
+      this.errorMessage.push("* There is mismatch in the column count. Please push null to the missing columns");
     }
     console.log(this.ApiData.UniqueKeys.length)
     if(this.ApiData.UniqueKeys.length <1){
@@ -277,4 +281,5 @@ export class HomeComponent implements OnInit {
      }else{
      return true;}
    }
+   
 }

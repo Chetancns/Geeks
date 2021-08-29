@@ -33,6 +33,7 @@
     ".NETCoreApp,Version=v5.0": {
       "ExcelComparer/1.0.0": {
         "dependencies": {
+          "ExcelLibrary": "1.2011.7.31",
           "Microsoft.Office.Interop.Excel": "15.0.4420.1017",
           "MySqlConnector": "1.0.0",
           "MySql.Data": "8.0.26",
@@ -338,6 +339,17 @@
         },
         "compile": {
           "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
+        }
+      },
+      "ExcelLibrary/1.2011.7.31": {
+        "runtime": {
+          "lib/ExcelLibrary.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/ExcelLibrary.dll": {}
         }
       },
       "Google.Protobuf/3.14.0": {
@@ -2297,6 +2309,13 @@
       "sha512": "sha512-6uxsQw2UXrt82VQAWC2td3oBSJjUZ3P4u4DliagB8wf67KsU53V8sW9xwdF+IwZOOZFR0TCZuv/YKZ2BlrfAag==",
       "path": "bouncycastle.netcore/1.8.5",
       "hashPath": "bouncycastle.netcore.1.8.5.nupkg.sha512"
+    },
+    "ExcelLibrary/1.2011.7.31": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ogX1mzqe1Ek3Z0AdER4B4QBJoBkt90Mfe0LnyiPg/uP+iZ7rx+9fFXbsZjOlPsS0xNn8sFeesvNnfEnuthudrQ==",
+      "path": "excellibrary/1.2011.7.31",
+      "hashPath": "excellibrary.1.2011.7.31.nupkg.sha512"
     },
     "Google.Protobuf/3.14.0": {
       "type": "package",

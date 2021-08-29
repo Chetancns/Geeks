@@ -11,6 +11,15 @@
           "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
         }
       },
+      "ExcelLibrary/1.2011.7.31": {
+        "type": "package",
+        "compile": {
+          "lib/ExcelLibrary.dll": {}
+        },
+        "runtime": {
+          "lib/ExcelLibrary.dll": {}
+        }
+      },
       "Google.Protobuf/3.14.0": {
         "type": "package",
         "dependencies": {
@@ -395,6 +404,18 @@
         "lib/netstandard2.0/BouncyCastle.Crypto.xml",
         "lib/xamarinios/BouncyCastle.Crypto.dll",
         "lib/xamarinios/BouncyCastle.Crypto.xml"
+      ]
+    },
+    "ExcelLibrary/1.2011.7.31": {
+      "sha512": "ogX1mzqe1Ek3Z0AdER4B4QBJoBkt90Mfe0LnyiPg/uP+iZ7rx+9fFXbsZjOlPsS0xNn8sFeesvNnfEnuthudrQ==",
+      "type": "package",
+      "path": "excellibrary/1.2011.7.31",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "excellibrary.1.2011.7.31.nupkg.sha512",
+        "excellibrary.nuspec",
+        "lib/ExcelLibrary.dll"
       ]
     },
     "Google.Protobuf/3.14.0": {
@@ -1116,6 +1137,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "ExcelLibrary >= 1.2011.7.31",
       "Microsoft.Office.Interop.Excel >= 15.0.0",
       "MySQLConnector >= 1.0.0",
       "MySql.Data >= 8.0.26",
@@ -1124,23 +1146,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\UDHAYASANKAR.R\\.nuget\\packages\\": {},
+    "C:\\Users\\Grishma.Patil\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
+      "projectUniqueName": "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
       "projectName": "ExcelComparer",
-      "projectPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
-      "packagesPath": "C:\\Users\\UDHAYASANKAR.R\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\",
+      "projectPath": "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
+      "packagesPath": "C:\\Users\\Grishma.Patil\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\UDHAYASANKAR.R\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Grishma.Patil\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp5.0"
@@ -1164,6 +1186,10 @@
       "net5.0": {
         "targetAlias": "netcoreapp5.0",
         "dependencies": {
+          "ExcelLibrary": {
+            "target": "Package",
+            "version": "[1.2011.7.31, )"
+          },
           "Microsoft.Office.Interop.Excel": {
             "target": "Package",
             "version": "[15.0.0, )"
@@ -1209,12 +1235,6 @@
   },
   "logs": [
     {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    },
-    {
       "code": "NU1603",
       "level": "Warning",
       "warningLevel": 1,
@@ -1230,6 +1250,16 @@
       "warningLevel": 1,
       "message": "ExcelComparer depends on System.Data.OleDb (>= 4.5.1) but System.Data.OleDb 4.5.1 was not found. An approximate best match of System.Data.OleDb 4.6.0 was resolved.",
       "libraryId": "System.Data.OleDb",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'ExcelLibrary 1.2011.7.31' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "ExcelLibrary",
       "targetGraphs": [
         "net5.0"
       ]
