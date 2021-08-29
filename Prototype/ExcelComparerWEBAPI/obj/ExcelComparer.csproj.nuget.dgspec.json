@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj": {}
+    "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj": {
+    "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
+        "projectUniqueName": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
         "projectName": "ExcelComparer",
-        "projectPath": "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
-        "packagesPath": "C:\\Users\\Grishma.Patil\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Grishma.Patil\\Desktop\\Solvathon\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\",
+        "projectPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
+        "packagesPath": "C:\\Users\\UDHAYASANKAR.R\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Grishma.Patil\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\UDHAYASANKAR.R\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp5.0"
@@ -41,9 +41,9 @@
         "net5.0": {
           "targetAlias": "netcoreapp5.0",
           "dependencies": {
-            "Microsoft.AspNet.WebApi.Cors": {
+            "Microsoft.Office.Interop.Excel": {
               "target": "Package",
-              "version": "[5.2.7, )"
+              "version": "[15.0.0, )"
             },
             "MySQLConnector": {
               "target": "Package",

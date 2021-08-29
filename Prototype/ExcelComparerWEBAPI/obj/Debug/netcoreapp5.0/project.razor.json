@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
+  "FilePath": "c:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\Solvathon\\GeekyCoders\\Prototype\\ExcelComparerWEBAPI\\ExcelComparer.csproj",
+=======
   "FilePath": "c:\\Users\\UDHAYASANKAR.R\\Documents\\GitHub\\GeekyCoder_Solvathon\\CreateXLTable\\ExcelComparer.csproj",
+>>>>>>> 8c2af5c0174e6343abd8e3a7e365b4bbe28a933b
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "5.0",

@@ -39,6 +39,8 @@ C:\Users\UDHAYASANKAR.R\Documents\GitHub\GeekyCoder_Solvathon\CreateXLTable\obj\
 C:\Users\UDHAYASANKAR.R\Documents\GitHub\GeekyCoder_Solvathon\CreateXLTable\obj\Debug\netcoreapp5.0\ref\ExcelComparer.dll
 C:\Users\UDHAYASANKAR.R\Documents\GitHub\GeekyCoder_Solvathon\CreateXLTable\obj\Debug\netcoreapp5.0\ExcelComparer.pdb
 C:\Users\UDHAYASANKAR.R\Documents\GitHub\GeekyCoder_Solvathon\CreateXLTable\obj\Debug\netcoreapp5.0\ExcelComparer.genruntimeconfig.cache
+<<<<<<< HEAD
+=======
 C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\bin\Debug\netcoreapp5.0\appsettings.Development.json
 C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\bin\Debug\netcoreapp5.0\appsettings.json
 C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\bin\Debug\netcoreapp5.0\ExcelComparer.exe
@@ -85,3 +87,10 @@ C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelCo
 C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\bin\Debug\netcoreapp5.0\System.Web.Http.dll
 C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\bin\Debug\netcoreapp5.0\System.Web.Http.Cors.dll
 C:\Users\Grishma.Patil\Desktop\Solvathon\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\bin\Debug\netcoreapp5.0\Newtonsoft.Json.Bson.dll
+>>>>>>> 8c2af5c0174e6343abd8e3a7e365b4bbe28a933b
+C:\Users\UDHAYASANKAR.R\Documents\GitHub\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\obj\Debug\netcoreapp5.0\ExcelComparer.csproj.AssemblyReference.cache
+C:\Users\UDHAYASANKAR.R\Documents\GitHub\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\obj\Debug\netcoreapp5.0\ExcelComparer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\UDHAYASANKAR.R\Documents\GitHub\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\obj\Debug\netcoreapp5.0\ExcelComparer.AssemblyInfoInputs.cache
+C:\Users\UDHAYASANKAR.R\Documents\GitHub\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\obj\Debug\netcoreapp5.0\ExcelComparer.AssemblyInfo.cs
+C:\Users\UDHAYASANKAR.R\Documents\GitHub\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\obj\Debug\netcoreapp5.0\ExcelComparer.csproj.CoreCompileInputs.cache
+C:\Users\UDHAYASANKAR.R\Documents\GitHub\Solvathon\GeekyCoders\Prototype\ExcelComparerWEBAPI\obj\Debug\netcoreapp5.0\ExcelComparer.MvcApplicationPartsAssemblyInfo.cache

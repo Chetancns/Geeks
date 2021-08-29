@@ -35,6 +35,7 @@ namespace ExcelComparer
     o.JsonSerializerOptions.PropertyNamingPolicy = null;
     o.JsonSerializerOptions.DictionaryKeyPolicy = null;
 });
+
             services.AddCors(options =>  
             {  
                 options.AddPolicy("CORS", Builder => Builder.AllowAnyOrigin()  
@@ -46,6 +47,7 @@ namespace ExcelComparer
                 //.AllowCredentials());  
                 // Apply CORS policy for all users  
             });  
+
             
         }
 
@@ -58,6 +60,7 @@ namespace ExcelComparer
             }
 
             app.UseCors("CORS");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

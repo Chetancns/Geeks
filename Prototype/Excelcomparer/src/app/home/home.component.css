@@ -27,3 +27,7 @@ table {
     height: 150px;
     /* overflow: scroll; */
 }
+
+.btn{
+  padding-bottom: 5px;
+}
