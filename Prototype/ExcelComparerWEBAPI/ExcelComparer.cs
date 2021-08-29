@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace ExcelComparer1
+namespace Test
 {
-    public class GetXLObjClass
+    public class Test1
     {
         
     

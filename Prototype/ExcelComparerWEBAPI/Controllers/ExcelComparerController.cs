@@ -22,7 +22,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
-using ExcelComparer;
+using ExcelComparer1;
 using ExcelLibrary=Microsoft.Office.Interop.Excel;
 using System.Reflection;
 
@@ -43,9 +43,9 @@ public async Task<JsonResult> DataLoad()
         ExcelComparer1.GetXLObjClass objClass= new ExcelComparer1.GetXLObjClass();
             try
             {   object json = string.Empty;
-                objClass.SourceFile =ExcelPath+"UDHAYASANKAR.R\\Documents\\GitHub\\Source.xlsx";
+                objClass.SourceFile =ExcelPath+"HasanAli.Doulatganjw\\Desktop\\InputFile\\Source.xlsx";
                 objClass.SourceSheetName = "Source_SQL";
-                objClass.DestFile= ExcelPath+"UDHAYASANKAR.R\\Documents\\GitHub\\Destination.xlsx";
+                objClass.DestFile= ExcelPath+"HasanAli.Doulatganjw\\Desktop\\InputFile\\Destination.xlsx";
                 
                 objClass.DestSheetName ="Destnation_SQL";
                 List<string> uniqueKey = new List<string>();
@@ -59,54 +59,54 @@ public async Task<JsonResult> DataLoad()
                 uniqueKey.Add("Payment_due_date");
                 boolFields.Add("Is_Payment_Done?");
                 srcColList.Add("PAYMENT_ID");	
-srcColList.Add("CONTRACT_NO")	;
-srcColList.Add("ContractType");
-srcColList.Add("PaymentType");
-srcColList.Add("CURRENCY_CODE");
-srcColList.Add("FX_Rate");
-srcColList.Add("Cost (USD)");
-srcColList.Add("Cost (Local)");
-srcColList.Add("Payment_due_date");
-srcColList.Add("Approval_date");
-srcColList.Add("Approver_Name");
-srcColList.Add("Is_Payment_Done?");
-srcColList.Add("Cash_localAmt");
-srcColList.Add("Cash_deducted_amt");
-srcColList.Add("Cash_USDAmt");
-srcColList.Add("Balance_Payment_Local")	;
-srcColList.Add("Balance_Payment_USD");
-srcColList.Add("Payment_Received_Date");	
-srcColList.Add("Issue_Date");
-srcColList.Add("Payment_Status");
-srcColList.Add("Last_UpdatedDate");
-srcColList.Add("Payment_Comments");
-srcColList.Add("Products");
-srcColList.Add("~");
-srcColList.Add("ID2");
-dstColList.Add("PaymentID");
-dstColList.Add("ContractNo");
-dstColList.Add("ContractType");
-dstColList.Add("PaymentType");
-dstColList.Add("CURRENCY_CODE");
-dstColList.Add("FX_Rate");
-dstColList.Add("Cost in USD");
-dstColList.Add("Cost in Local");
-dstColList.Add("Payment_due_date");
-dstColList.Add("Approval_date");
-dstColList.Add("Approver_Name");
-dstColList.Add("IS_PAYMENT_COMPLETE?");
-dstColList.Add("Cash_localAmt");
-dstColList.Add("Cash_deducted_amt");
-dstColList.Add("Cash_USDAmt");
-dstColList.Add("Balance_Payment_Local");
-dstColList.Add("Balance_Payment_USD");
-dstColList.Add("Payment_Received_Date");
-dstColList.Add("Issue_Date");
-dstColList.Add("Payment_Status");
-dstColList.Add("Last_UpdatedDate");
-dstColList.Add("Payment_Comments");
-dstColList.Add("Products");
-dstColList.Add("ID");
+                srcColList.Add("CONTRACT_NO")	;
+                srcColList.Add("ContractType");
+                srcColList.Add("PaymentType");
+                srcColList.Add("CURRENCY_CODE");
+                srcColList.Add("FX_Rate");
+                srcColList.Add("Cost (USD)");
+                srcColList.Add("Cost (Local)");
+                srcColList.Add("Payment_due_date");
+                srcColList.Add("Approval_date");
+                srcColList.Add("Approver_Name");
+                srcColList.Add("Is_Payment_Done?");
+                srcColList.Add("Cash_localAmt");
+                srcColList.Add("Cash_deducted_amt");
+                srcColList.Add("Cash_USDAmt");
+                srcColList.Add("Balance_Payment_Local")	;
+                srcColList.Add("Balance_Payment_USD");
+                srcColList.Add("Payment_Received_Date");	
+                srcColList.Add("Issue_Date");
+                srcColList.Add("Payment_Status");
+                srcColList.Add("Last_UpdatedDate");
+                srcColList.Add("Payment_Comments");
+                srcColList.Add("Products");
+                srcColList.Add("~");
+                srcColList.Add("ID2");
+                dstColList.Add("PaymentID");
+                dstColList.Add("ContractNo");
+                dstColList.Add("ContractType");
+                dstColList.Add("PaymentType");
+                dstColList.Add("CURRENCY_CODE");
+                dstColList.Add("FX_Rate");
+                dstColList.Add("Cost in USD");
+                dstColList.Add("Cost in Local");
+                dstColList.Add("Payment_due_date");
+                dstColList.Add("Approval_date");
+                dstColList.Add("Approver_Name");
+                dstColList.Add("IS_PAYMENT_COMPLETE?");
+                dstColList.Add("Cash_localAmt");
+                dstColList.Add("Cash_deducted_amt");
+                dstColList.Add("Cash_USDAmt");
+                dstColList.Add("Balance_Payment_Local");
+                dstColList.Add("Balance_Payment_USD");
+                dstColList.Add("Payment_Received_Date");
+                dstColList.Add("Issue_Date");
+                dstColList.Add("Payment_Status");
+                dstColList.Add("Last_UpdatedDate");
+                dstColList.Add("Payment_Comments");
+                dstColList.Add("Products");
+                dstColList.Add("ID");
 
 
                 await Task.Delay(1);
@@ -115,14 +115,14 @@ dstColList.Add("ID");
                     string TableName = string.Empty;
                     TableName="source";
                     Console.Write("src file\n");
-                 // await CreateTablefromFile(objClass.SourceFile,objClass.SourceSheetName+"$", TableName);/** To create Source Table in MYSQL and insert filedata into the tabel**/
+                    await CreateTablefromFile(objClass.SourceFile,objClass.SourceSheetName+"$", TableName);/** To create Source Table in MYSQL and insert filedata into the tabel**/
                 }
                 if(objClass.DestFile != null)
                 {
                     string TableName = string.Empty;
                     TableName="destination";
                     Console.Write("destination file\n");
-                //   await CreateTablefromFile(objClass.DestFile,objClass.DestSheetName+"$",TableName);/** To create Destination Table in MYSQL and insert filedata into the tabel**/
+                    await CreateTablefromFile(objClass.DestFile,objClass.DestSheetName+"$",TableName);/** To create Destination Table in MYSQL and insert filedata into the tabel**/
                 }
                // Console.Write(conn_string);
                DataSet DatasetOutput = new DataSet();
@@ -134,19 +134,26 @@ dstColList.Add("ID");
             //   DatasetOutput.Tables.Add(UniqueKeyMissingRecords());
             //   DatasetOutput.Tables.Add(ColumnMismatch(srcColList,dstColList));
             //   DatasetOutput.Tables.Add(RecordToRecordCompare());
-              foreach(var Rule in objClass.SelectedRules)
-              {
-              if(objClass.SelectedRules.Equals("Record Count")){DatasetOutput.Tables.Add(RecordCount());}
-              if(objClass.SelectedRules.Equals("Unique Key Missing Records")){DatasetOutput.Tables.Add(UniqueKeyMissingRecords());}
-                  //UniqueKeyMissingRecordstest(srcColList,dstColList,uniqueKey,boolFields);
-              if(objClass.SelectedRules.Equals("Column Compare")){DatasetOutput.Tables.Add(ColumnMismatch(srcColList,dstColList));}
-              if(objClass.SelectedRules.Equals("Record to Record")){DatasetOutput.Tables.Add(RecordToRecordCompare());} 
-              }
+            //   foreach(var Rule in objClass.SelectedRules)
+            //   {
+            //   if(objClass.SelectedRules.Equals("Record Count")){DatasetOutput.Tables.Add(RecordCount());}
+            //   if(objClass.SelectedRules.Equals("Unique Key Missing Records")){DatasetOutput.Tables.Add(UniqueKeyMissingRecords());}
+            //       //UniqueKeyMissingRecordstest(srcColList,dstColList,uniqueKey,boolFields);
+            //   if(objClass.SelectedRules.Equals("Column Compare")){DatasetOutput.Tables.Add(ColumnMismatch(srcColList,dstColList));}
+            //   if(objClass.SelectedRules.Equals("Record to Record")){DatasetOutput.Tables.Add(RecordToRecordCompare());} 
+            //   }
                //ExcelOutput(DT);
                
               // ExcelLibrary.DataSetHelper.CreateWorkbook("ExcelComparerOutput.xls", DatasetOutput);
               //CreateExcelFile.CreateExcelDocument(DatasetOutput, "YourExcelfilename.xlsx", Response);
              // CreateExcel(@"C:\Users\UDHAYASANKAR.R\Documents\GitHub\OUTPUT.xlsx",DatasetOutput);
+
+
+                RecordCount();
+              UniqueKeyMissingRecords();
+                  //UniqueKeyMissingRecordstest(srcColList,dstColList,uniqueKey,boolFields);
+             ColumnMismatch(srcColList,dstColList);
+              RecordToRecordCompare();
                 return new JsonResult(json);
             }
             catch (Exception ex)
