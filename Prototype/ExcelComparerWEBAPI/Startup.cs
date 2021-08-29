@@ -35,9 +35,7 @@ namespace ExcelComparer
     o.JsonSerializerOptions.PropertyNamingPolicy = null;
     o.JsonSerializerOptions.DictionaryKeyPolicy = null;
 });
-<<<<<<< HEAD
 
-=======
             services.AddCors(options =>  
             {  
                 options.AddPolicy("CORS", Builder => Builder.AllowAnyOrigin()  
@@ -49,7 +47,7 @@ namespace ExcelComparer
                 //.AllowCredentials());  
                 // Apply CORS policy for all users  
             });  
->>>>>>> 8c2af5c0174e6343abd8e3a7e365b4bbe28a933b
+
             
         }
 
@@ -61,10 +59,8 @@ namespace ExcelComparer
                 app.UseDeveloperExceptionPage();
             }
 
-<<<<<<< HEAD
-=======
             app.UseCors("CORS");
->>>>>>> 8c2af5c0174e6343abd8e3a7e365b4bbe28a933b
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
