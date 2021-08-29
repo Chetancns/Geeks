@@ -17,14 +17,16 @@ table {
   }
 .cont{
   overflow-y:scroll;
+  background-color:blanchedalmond;
+  border: 2px solid rgb(1, 1, 19);
   padding-bottom: 30px;   
 }
   div.ex1{
-      height: 150px;
+      height: 500px;
       /* overflow: scroll; */
   }
   div.ex2{
-    height: 150px;
+    height: 500px;
     /* overflow: scroll; */
 }
 

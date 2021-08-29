@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import {DualListComponent} from 'angular-dual-listbox';
 import {CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
-import {JsonData} from '../../Models/home.model'
-import {HomeService} from '../../Service/home.service'
-import { ThisReceiver } from '@angular/compiler';
-import {FileSaver,saveAs} from 'file-saver';
+import {JsonData} from '../../Models/home.model';
+import {HomeService} from '../../Service/home.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +24,7 @@ export class HomeComponent implements OnInit {
   wbDist:any;
 
   DistCol:any;
-  errorMessage: any[];
+  errorMessage:string[]=[];
   RuleList:any;
   ApiData:JsonData={
     SourceFile:undefined,
@@ -75,6 +73,7 @@ export class HomeComponent implements OnInit {
  
      reader.onloadend = (e) => {
        this.spinnerEnabled = false;
+       
      }
    }
    }
@@ -177,10 +176,10 @@ export class HomeComponent implements OnInit {
   onStart() 
   {
     this.errorMessage=[];
-     if(this.isDataValid()){
+     if(!this.isDataValid()){
       this.service.DataOnSave(JSON.stringify(this.ApiData)).subscribe(
         res => {
-          console.log(this.ApiData + "In Component");
+          
           //this.ApiData = res;
           //this.ApiData.DestFile = res.toString();
         },

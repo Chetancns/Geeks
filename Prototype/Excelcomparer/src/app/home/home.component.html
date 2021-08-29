@@ -54,87 +54,95 @@
     
     <div class="container cont">
         <div class="form-group row">
-            <div class="col-sm-2">
-                <div class="flex-container ex1">
-                    <div class="flex-child magenta">
-                        <div><b>Source List</b></div>
-                      <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
-                          <table>
-                              <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
-                                  <td>
-                                    {{items}}
-                                  </td>
-                              </tr>
-                          </table>
-                        <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
-                      </div>
-                    </div>
-                      <button type="button" class="btn btn-primary" (click)="onPush('S')" >Push Null</button>
-                      <button type="button" class="btn btn-primary" (click)="onRemove('S')">Remove Null</button>
-                </div>
-            </div>
             
-            <div class="col-sm-2">
-                <div class="flex-container ex2">
-                <div class="flex-child green">
-                    <div><b>Destination List</b></div>
-                    <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
-                        <table>
-                            <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
-                                <td >
-                                    {{items}}
-                                </td>
-                            </tr>
-                        </table>
-                      <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
+            <div class="col-sm-4">
+                <strong style="padding-bottom: 4px;color:darkorchid">Please perform the Column Mapping</strong>
+                <div class="col-sm-6">
+                    <div class="flex-container ex1">
+                        <div class="flex-child magenta">
+                            <div><b>Source List</b></div>
+                          <div cdkDropList class="example-list  " (cdkDropListDropped)="drop($event)">
+                              <table>
+                                  <tr class="example-box" *ngFor="let items of ApiData.SourceCol" cdkDrag [cdkDragDisabled]="true">
+                                      <td>
+                                        {{items}}
+                                      </td>
+                                  </tr>
+                              </table>
+                            <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
+                          </div>
+                        </div>
+                          <button type="button" class="btn btn-success" (click)="onPush('S')" >Push Null</button>
+                          <button type="button" class="btn btn-primary" (click)="onRemove('S')">Remove Null</button>
                     </div>
-                  </div>
-                  <button type="button" class="btn btn-primary" (click)="onPush('D')" >Push Null</button>
-                  <button type="button" class="btn btn-primary" (click)="onRemove('D')">Remove Null</button>
+                </div>
+                
+                <div class="col-sm-6">
+                    <div class="flex-container ex2">
+                    <div class="flex-child green">
+                        <div><b>Destination List</b></div>
+                        <div cdkDropList class="example-list " (cdkDropListDropped)="drop($event)">
+                            <table>
+                                <tr class="example-box" *ngFor="let items of ApiData.DestCol" cdkDrag>
+                                    <td >
+                                        {{items}}
+                                    </td>
+                                </tr>
+                            </table>
+                          <!-- <div class="example-box" *ngFor="let items of DistKeys" cdkDrag >{{items}}</div> -->
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-success" (click)="onPush('D')" >Push Null</button>
+                      <button type="button" class="btn btn-primary" (click)="onRemove('D')">Remove Null</button>
+                    </div>
                 </div>
             </div>
            
-            <div class="col-sm-4">
-                <strong class="text-center" >Please Select Flag or Boolean Variables if any</strong>
-                <dual-list [source]="ApiData.SourceCol" [(destination)]="ApiData.FlagVariable"  height="150px"></dual-list>
+            <div class="col-sm-4" style="border: 2px solid black;">
+                <strong class="text-center" style="padding-bottom: 4px;color:darkorchid;">Please Select Flag or Boolean Variables if any</strong>
+                <dual-list [source]="ApiData.SourceCol" [(destination)]="ApiData.FlagVariable"  height="500px"></dual-list>
             </div>
+            
+            <div class="col-sm-4">
+                <strong style="padding-bottom: 4px;color:darkorchid;">Please Select the Unique Keys                </strong>
                 <div class="form-group-row">
-                   <div class="col-sm-2">
-                        <div class="flex-container ex1">
-                            <strong>Please Select the Unique Keys</strong>
-                            <div class="flex-child magenta ">
-                                    <table>
-                                        <tr class="example-box" *ngFor="let items of ApiData.SourceCol">
-                                            <td >
-                                                <button type="button" class="btn btn-light btn-block" data-toggle="button" 
-                                      aria-pressed="false" autocomplete="off"  (click)="OnAddUnqine(items)">
-                                            {{items}}
-                                        </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="flex-container ex2">
-                            <div class="flex-child green">
-                                <strong>Selected Unique Keys List</strong>
-                                    <table>
-                                        <tr class="example-box" *ngFor="let items of ApiData.UniqueKeys">
-                                            <td >
-                                                <button type="button" class="btn btn-light btn-block" data-toggle="button" 
-                                      aria-pressed="false" autocomplete="off"  (click)="OnRemoveUnqine(items)">
-                                            {{items}}
-                                        </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <div class="col-sm-6">
+                         <div class="flex-container ex1">
+                             <strong>Please Select the Unique Keys</strong>
+                             <div class="flex-child magenta ">
+                                     <table>
+                                         <tr class="example-box" *ngFor="let items of ApiData.SourceCol">
+                                             <td >
+                                                 <button type="button" class="btn btn-light btn-block" data-toggle="button" 
+                                       aria-pressed="false" autocomplete="off"  (click)="OnAddUnqine(items)">
+                                             {{items}}
+                                         </button>
+                                             </td>
+                                         </tr>
+                                     </table>
+                                 <!-- <div class="example-box" *ngFor="let items of Sourcekeys" cdkDrag [cdkDragDisabled]="true">{{items}}</div> -->
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-sm-6">
+                         <div class="flex-container ex2">
+                             <div class="flex-child green">
+                                 <strong>Selected Unique Keys List</strong>
+                                     <table>
+                                         <tr class="example-box" *ngFor="let items of ApiData.UniqueKeys">
+                                             <td >
+                                                 <button type="button" class="btn btn-light btn-block" data-toggle="button" 
+                                       aria-pressed="false" autocomplete="off"  (click)="OnRemoveUnqine(items)">
+                                             {{items}}
+                                         </button>
+                                             </td>
+                                         </tr>
+                                     </table>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
         </div>
     </div>
     <div class="col-sm-4">
@@ -143,6 +151,6 @@
             <input type="checkbox" class="form-check-input" [id]="Rule" [value]="Rule" [name]="Rule" (change)="onCheckboxChange($event)"/>
             <label class="form-check-label">{{Rule}}</label>
         </div>
-    </div>      
-</form>
-
+    </div>     
+   
+</form>          

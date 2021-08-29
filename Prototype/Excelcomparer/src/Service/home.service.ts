@@ -1,11 +1,10 @@
 import { Injectable,Inject } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders,HttpResponse} from '@angular/common/http';
 import {Observable,of} from 'rxjs';
 import { BASE_URL } from 'app.config';
 import { JsonData  } from '../Models/home.model';
 
 const headers = new HttpHeaders().set('content-type', 'application/json');
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +18,7 @@ export class HomeService {
 
       DataOnSave(objClass : any){//:Observable<any>{
         console.log(objClass);
-        return this.http.post(this.servername + 'api/dataload' , objClass , {headers});
+        return this.http.post(this.servername + 'api/dataload' , objClass , {headers ,observe: 'response',responseType: "arraybuffer"});
       }
       getRuleList() : Observable<any[]>{
         console.log("Service rule");
