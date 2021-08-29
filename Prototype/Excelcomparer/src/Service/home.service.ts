@@ -28,7 +28,8 @@ export class HomeService {
       // "Symbol Mismatch","Duplicate Check"]
       //  return rule;
       }
-      // sendJasonData(data:JsonData){
-      //   console.log(JSON.stringify(data))
-      // }
+      sendJasonData(){
+       // console.log(JSON.stringify(data))
+       this.http.get(this.servername + 'api/complete');
+      }
 }
