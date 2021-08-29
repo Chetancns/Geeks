@@ -5,6 +5,7 @@ import {CdkDragDrop,moveItemInArray} from '@angular/cdk/drag-drop';
 import {JsonData} from '../../Models/home.model'
 import {HomeService} from '../../Service/home.service'
 import { ThisReceiver } from '@angular/compiler';
+import {FileSaver,saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-home',
